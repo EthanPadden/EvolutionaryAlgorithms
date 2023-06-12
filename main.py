@@ -44,6 +44,13 @@ def fitness(solution):
 
     return (100*sum_range) - sum_cost
 
+def calculate_avg_fitness(solution_fitnesses):
+    sum_fitnesses = 0
+    for solution_fitness in solution_fitnesses:
+        sum_fitnesses += solution_fitness
+
+    return sum_fitnesses/len(solution_fitnesses)
+
 
 if __name__ == '__main__':
     '''Single-objective problem:
@@ -83,7 +90,14 @@ if __name__ == '__main__':
         {'range': 600, 'cost': 1320}
     ]
 
-    # INITIALISATION
+    # Termination criteria variables
+    max_generations = 20
+    terminate = False
+    current_generation = 0
+    percentage_performance_stagnation = 5
+    previous_avg_fitness = 0
+
+    # INITIALISATION    ===================================
     population = []
     for i in range(0, population_size):
         # create a random bitstring of length T
@@ -92,14 +106,41 @@ if __name__ == '__main__':
 
     print_population(population)
 
-    # EVALUATION
-    solution_fitnesses = []
-    for solution in population:
-        solution_fitnesses.append(
-            fitness(solution)
-        )
+    while(terminate == False):
+        # EVALUATION        ===================================
+        solution_fitnesses = []
+        for solution in population:
+            solution_fitnesses.append(
+                fitness(solution)
+            )
 
-    print_population(population, solution_fitnesses)
+        print_population(population, solution_fitnesses)
+
+        # TERMINATION       ===================================
+        # In this problem, we don't have an ideal fitness if we can improve the cost-range tradeoff
+        # So no fitness condition
+
+        # Max generations reached?
+        if current_generation >= max_generations:
+            terminate = True
+            break
+
+        # Performance stagnation?
+        # Instead of a threshold value, we can take this as a percentage
+        # ie if we don't see an increase of at least 5% for the average fitness, stop
+        current_avg_fitness = calculate_avg_fitness(solution_fitnesses)
+        diff_avg_fitness = current_avg_fitness - previous_avg_fitness
+        if(current_generation > 0):
+            if ((diff_avg_fitness/previous_avg_fitness) * 100) < 5:
+                terminate = True
+                break
+
+
+
+
+        previous_avg_fitness = current_avg_fitness
+        current_generation += 1
+
 
 
 
