@@ -141,8 +141,11 @@ if __name__ == '__main__':
                 break
 
         # SELECTION       ===================================
-
-
+        # Sort the population by fitness
+        sorted_population = sorted(population, key=lambda x: x['fitness'], reverse=True)
+        next_generation = []
+        for i in range(0, num_selected_solutions):
+            next_generation.append(sorted_population[i])
 
 
         previous_avg_fitness = current_avg_fitness
