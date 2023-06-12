@@ -2,18 +2,14 @@ import numpy as np
 import pandas as pd
 from plotly import express as px
 
-def print_population(population, solution_fitnesses=None):
-   for i in range(0, len(population)):
-        solution = population[i]
-        bitstring = ''.join(map(str, solution))
-        if solution_fitnesses != None:
-            fitness = solution_fitnesses[i]
-            print(f'{bitstring}\t{fitness}')
-        else:
-            print(bitstring)
+def print_population(population):
+   for solution in population:
+       bitstring = ''.join(map(str, solution['config']))
+       fitness = solution['fitness']
+       print(f'{bitstring}\t{fitness}')
 
 
-def fitness(solution):
+def fitness(config):
     '''What could be a fitness function here?
     Maximise range
     Minimise cost
@@ -29,10 +25,10 @@ def fitness(solution):
     '''
     # Get the corresponding tower placements as in the bitstring
     tower_placements = []
-    for i in range(0, len(solution)):
-        if solution[i] == 1:
+    for i in range(0, len(config)):
+        if config[i] == 1:
             tower_placements.append(possible_tower_placements[i])
-        elif solution[i] != 0 and solution[i] != 1:
+        elif config[i] != 0 and config[i] != 1:
             raise ValueError
 
     # Sum the variables in this solution
@@ -44,12 +40,12 @@ def fitness(solution):
 
     return (100*sum_range) - sum_cost
 
-def calculate_avg_fitness(solution_fitnesses):
+def calculate_avg_fitness():
     sum_fitnesses = 0
-    for solution_fitness in solution_fitnesses:
-        sum_fitnesses += solution_fitness
+    for solution in population:
+        sum_fitnesses += solution['fitness']
 
-    return sum_fitnesses/len(solution_fitnesses)
+    return sum_fitnesses/len(population)
 
 
 if __name__ == '__main__':
@@ -74,6 +70,8 @@ if __name__ == '__main__':
     # configuration consists of 3 towers
     # since each tower location is at a set index, we can use a bitstring of length T
     # e.g. if T = 8 config [t2, t5, t6] can be represented as 00100110
+    # TODO: each solution will have their fitness associated with them and stored
+    # solution: { bitstring : fitness }
     # population consists of N possible tower configurations
 
     # GLOBAL VARIABLES (CAN BE ADJUSTED)
@@ -97,24 +95,31 @@ if __name__ == '__main__':
     percentage_performance_stagnation = 5
     previous_avg_fitness = 0
 
+    # Selection variables
+    num_selected_solutions = 6
+
     # INITIALISATION    ===================================
     population = []
     for i in range(0, population_size):
         # create a random bitstring of length T
-        solution = np.random.randint(0, 2, size=8, dtype=np.uint8)
+        bitstring = np.random.randint(0, 2, size=8, dtype=np.uint8)
+        # Initially set the fitness value to 0 until we evaluate
+        solution = {
+            'config': bitstring,
+            'fitness': 0
+        }
         population.append(solution)
 
     print_population(population)
 
+    # GENERATIONAL LOOP
     while(terminate == False):
         # EVALUATION        ===================================
-        solution_fitnesses = []
         for solution in population:
-            solution_fitnesses.append(
-                fitness(solution)
-            )
+            config = solution['config']
+            solution['fitness'] = fitness(config)
 
-        print_population(population, solution_fitnesses)
+        print_population(population)
 
         # TERMINATION       ===================================
         # In this problem, we don't have an ideal fitness if we can improve the cost-range tradeoff
@@ -128,12 +133,14 @@ if __name__ == '__main__':
         # Performance stagnation?
         # Instead of a threshold value, we can take this as a percentage
         # ie if we don't see an increase of at least 5% for the average fitness, stop
-        current_avg_fitness = calculate_avg_fitness(solution_fitnesses)
+        current_avg_fitness = calculate_avg_fitness()
         diff_avg_fitness = current_avg_fitness - previous_avg_fitness
         if(current_generation > 0):
             if ((diff_avg_fitness/previous_avg_fitness) * 100) < 5:
                 terminate = True
                 break
+
+        # SELECTION       ===================================
 
 
 
