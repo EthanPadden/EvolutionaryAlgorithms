@@ -1,5 +1,8 @@
 import numpy as np
 import settings as g
+import tools
+
+
 def initialise():
     population = []
     for i in range(0, g.population_size):
@@ -13,3 +16,8 @@ def initialise():
         population.append(solution)
 
     return population
+
+def evaluate(population):
+    for solution in population:
+        config = solution['config']
+        solution['fitness'] = tools.fitness(config, g.possible_tower_placements)

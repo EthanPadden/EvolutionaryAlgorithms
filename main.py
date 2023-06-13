@@ -43,9 +43,7 @@ if __name__ == '__main__':
     previous_avg_fitness = 0
     while(terminate == False):
         # EVALUATION        ===================================
-        for solution in current_generation:
-            config = solution['config']
-            solution['fitness'] = tools.fitness(config, g.possible_tower_placements)
+        evo.evaluate(current_generation)
 
         # TERMINATION       ===================================
         # In this problem, we don't have an ideal fitness if we can improve the cost-range tradeoff
