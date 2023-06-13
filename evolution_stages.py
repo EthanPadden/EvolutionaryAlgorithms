@@ -21,3 +21,12 @@ def evaluate(population):
     for solution in population:
         config = solution['config']
         solution['fitness'] = tools.fitness(config)
+
+def select(current_gen):
+    # Sort the population by fitness
+    sorted_population = sorted(current_gen, key=lambda x: x['fitness'], reverse=True)
+    next_gen = []
+    for i in range(0, g.num_selected_solutions):
+        next_gen.append(sorted_population[i])
+
+    return next_gen

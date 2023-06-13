@@ -33,18 +33,18 @@ if __name__ == '__main__':
     # population consists of N possible tower configurations
 
     # INITIALISATION    ===================================
-    current_generation = evo.initialise()
+    current_gen = evo.initialise()
 
     # GENERATIONAL LOOP
     generation_number = 0
     # TODO: remove this variable - not needed? just use break?
     terminate = False
     prev_avg_fitness = 0
-    tools.print_population(current_generation, generation_number, 'INITIALISATION')
+    tools.print_population(current_gen, generation_number, 'INITIALISATION')
     while(terminate == False):
         # EVALUATION        ===================================
-        evo.evaluate(current_generation)
-        tools.print_population(current_generation, generation_number, 'EVALUATION')
+        evo.evaluate(current_gen)
+        tools.print_population(current_gen, generation_number, 'EVALUATION')
 
         # TERMINATION       ===================================
         # In this problem, we don't have an ideal fitness if we can improve the cost-range tradeoff
@@ -59,7 +59,7 @@ if __name__ == '__main__':
         # Performance stagnation?
         # Instead of a threshold value, we can take this as a percentage
         # ie if we don't see an increase of at least 5% for the average fitness, stop
-        current_avg_fitness = tools.calculate_avg_fitness(current_generation)
+        current_avg_fitness = tools.calculate_avg_fitness(current_gen)
         diff_avg_fitness = current_avg_fitness - prev_avg_fitness
         if(generation_number > 0):
             if ((diff_avg_fitness / prev_avg_fitness) * 100) < 5:
@@ -68,32 +68,30 @@ if __name__ == '__main__':
                 break
 
         # SELECTION       ===================================
-        # Sort the population by fitness
-        sorted_population = sorted(current_generation, key=lambda x: x['fitness'], reverse=True)
-        next_generation = []
-        for i in range(0, g.num_selected_solutions):
-            next_generation.append(sorted_population[i])
+        next_gen = evo.select(current_gen)
 
         # VARIATION       ===================================
         # crossover
         # we need to loop until the next generation is full
-        while(len(next_generation) < len(current_generation)):
+        sorted_population = sorted(current_gen, key=lambda x: x['fitness'], reverse=True)
+
+        while(len(next_gen) < len(current_gen)):
             # choose the top 2 in the population - and pop them off so we dont consider them anymore
             parent_a = sorted_population.pop(0)
             parent_b = sorted_population.pop(0)
             offspring_c, offspring_d = tools.crossover(parent_a, parent_b)
-            next_generation.append(offspring_c)
-            if len(next_generation) < len(current_generation):
-                next_generation.append(offspring_d)
+            next_gen.append(offspring_c)
+            if len(next_gen) < len(current_gen):
+                next_gen.append(offspring_d)
 
         # mutation
         # choose a random number of solutions
-        num_solutions_to_mutate = random.randint(1, len(next_generation))
+        num_solutions_to_mutate = random.randint(1, len(next_gen))
         for i in range(1, num_solutions_to_mutate):
             # choose a random solution
 
-            soln_index_to_mutate = random.randint(0, (len(next_generation)-1))
-            soln_to_mutate = next_generation[soln_index_to_mutate]
+            soln_index_to_mutate = random.randint(0, (len(next_gen) - 1))
+            soln_to_mutate = next_gen[soln_index_to_mutate]
 
             # choose a random number of bits to flip
             num_bits_to_flip = random.randint(0, (len(g.possible_tower_placements)-1))
