@@ -1,5 +1,4 @@
-# GLOBAL VARIABLES (CAN BE ADJUSTED)
-population_size = 10
+'''Problem data'''
 possible_tower_placements = [
     {'range': 319, 'cost': 578},
     {'range': 449, 'cost': 4937},
@@ -11,9 +10,21 @@ possible_tower_placements = [
     {'range': 600, 'cost': 1320}
 ]
 
-# Termination criteria variables
+'''Initialisation variables'''
+population_size = 10
+
+'''Evaluation variables'''
+# fitness = (x * sum_range) - (y * sum_cost)
+x = 100
+y = 1
+
+'''Termination criteria variables'''
 max_generations = 20
 percentage_performance_stagnation = 5
 
-# Selection variables
+'''Selection variables'''
 num_selected_solutions = 6
+
+'''Variation variables'''
+crossover = True
+mutation = True

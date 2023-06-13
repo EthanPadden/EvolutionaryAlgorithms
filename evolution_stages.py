@@ -45,38 +45,40 @@ def select(current_gen, next_gen=None):
 
 def variation(current_gen, next_gen):
     # CROSSOVER
-    # we need to loop until the next generation is full
-    current_gen.sort()
+    if g.crossover == True:
+        # we need to loop until the next generation is full
+        current_gen.sort()
 
-    output = 'VARIATION - SORTED FITNESSES:'
-    for solution in current_gen.get_solutions():
-        output += f"\t{solution.get_fitness()}"
-    print(output)
-
-    output = f'VARIATION - {g.num_selected_solutions} NEXT_GEN:\t\t'
-    if (next_gen == None):
-        next_gen = []
-    for i in range(0, g.num_selected_solutions):
-        # TODO: change to get_solution(index)?
-        solution = current_gen.get_solutions()[i]
-        output += f"\t{solution.get_fitness()}"
-
-    print(output)
-    slots_left = g.population_size - g.num_selected_solutions
-    print(f'VARIATION - slots left = {slots_left}')
-
-    # TODO: get_size() method for population
-    while(len(next_gen.get_solutions()) < g.population_size):
-        # choose the top 2 in the population - and pop them off so we dont consider them anymore
-        parent_a = current_gen.get_solutions().pop(0)
-        parent_b = current_gen.get_solutions().pop(0)
-        offspring_c, offspring_d = tools.crossover(parent_a, parent_b)
-        output = f"CROSSOVER:\t{parent_a.get_config()} + {parent_b.get_config()} = {offspring_c.get_config()} + {offspring_d.get_config()}"
-        output += f"\n\t\t\t{str(parent_a.get_fitness())} + {str(parent_b.get_fitness())} = {str(offspring_c.get_fitness())} + {str(offspring_d.get_fitness())}"
+        output = 'VARIATION - SORTED FITNESSES:'
+        for solution in current_gen.get_solutions():
+            output += f"\t{solution.get_fitness()}"
         print(output)
-        next_gen.add_solution(offspring_c)
-        if len(next_gen.get_solutions()) < g.population_size:
-            next_gen.add_solution(offspring_d)
+
+        output = f'VARIATION - {g.num_selected_solutions} NEXT_GEN:\t\t'
+        if (next_gen == None):
+            next_gen = []
+        for i in range(0, g.num_selected_solutions):
+            # TODO: change to get_solution(index)?
+            solution = current_gen.get_solutions()[i]
+            output += f"\t{solution.get_fitness()}"
+
+        print(output)
+        slots_left = g.population_size - g.num_selected_solutions
+        print(f'VARIATION - slots left = {slots_left}')
+
+        # TODO: get_size() method for population
+        while(len(next_gen.get_solutions()) < g.population_size):
+            # choose the top 2 in the population - and pop them off so we dont consider them anymore
+            parent_a = current_gen.get_solutions().pop(0)
+            parent_b = current_gen.get_solutions().pop(0)
+            offspring_c, offspring_d = tools.crossover(parent_a, parent_b)
+            output = f"CROSSOVER:\t{parent_a.get_config()} + {parent_b.get_config()} = {offspring_c.get_config()} + {offspring_d.get_config()}"
+            output += f"\n\t\t\t{str(parent_a.get_fitness())} + {str(parent_b.get_fitness())} = {str(offspring_c.get_fitness())} + {str(offspring_d.get_fitness())}"
+            print(output)
+            next_gen.add_solution(offspring_c)
+            if len(next_gen.get_solutions()) < g.population_size:
+                next_gen.add_solution(offspring_d)
 
     # mutation
-    next_gen.mutate()
+    if g.mutation == True:
+        next_gen.mutate()
