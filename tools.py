@@ -3,37 +3,6 @@ import math
 from tabulate import tabulate
 
 import settings as g
-import tkinter as tk
-from tkinter import ttk
-
-def print_population(population, generation_number, evo_stage):
-    print(f'Gen = {generation_number}\t{evo_stage}')
-    table_data = [['bitstring', 'fitness', 'Erange', 'Ecost']]
-    for solution in population:
-        config = solution['config']
-
-        bitstring = ''.join(map(str, config))
-        fitness = solution['fitness']
-        tower_placements = []
-
-        for i in range(0, len(config)):
-            if config[i] == 1:
-                tower_placements.append(g.possible_tower_placements[i])
-            elif config[i] != 0:
-                raise ValueError
-
-        total_range = 0
-        total_cost = 0
-        for tower_placement in tower_placements:
-            total_range += tower_placement['range']
-            total_cost += tower_placement['cost']
-
-        row_data = [bitstring, str(fitness), str(total_range), str(total_cost)]
-        table_data.append(row_data)
-    print(tabulate(table_data))
-
-
-
 def fitness(config):
     '''What could be a fitness function here?
     Maximise range
