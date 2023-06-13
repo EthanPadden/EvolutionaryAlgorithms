@@ -1,3 +1,5 @@
+from math import ceil
+import random
 import numpy as np
 import pandas as pd
 from plotly import express as px
@@ -42,11 +44,23 @@ def fitness(config):
 
 def calculate_avg_fitness():
     sum_fitnesses = 0
-    for solution in population:
+    for solution in current_generation:
         sum_fitnesses += solution['fitness']
 
-    return sum_fitnesses/len(population)
+    return sum_fitnesses/len(current_generation)
 
+def crossover(parent_a, parent_b):
+    config_a = parent_a['config']
+    config_b = parent_b['config']
+    crossover_point = ceil(len(config_a)/2)
+
+    config_c = np.concatenate((config_a[:crossover_point], config_b[crossover_point:]))
+    config_d = np.concatenate((config_b[:crossover_point], config_a[crossover_point:]))
+
+    offspring_c = {'config': config_c, 'fitness': 0}
+    offspring_d = {'config': config_d, 'fitness': 0}
+
+    return offspring_c, offspring_d
 
 if __name__ == '__main__':
     '''Single-objective problem:
@@ -91,7 +105,7 @@ if __name__ == '__main__':
     # Termination criteria variables
     max_generations = 20
     terminate = False
-    current_generation = 0
+    generation_number = 0
     percentage_performance_stagnation = 5
     previous_avg_fitness = 0
 
@@ -99,7 +113,7 @@ if __name__ == '__main__':
     num_selected_solutions = 6
 
     # INITIALISATION    ===================================
-    population = []
+    current_generation = []
     for i in range(0, population_size):
         # create a random bitstring of length T
         bitstring = np.random.randint(0, 2, size=8, dtype=np.uint8)
@@ -108,25 +122,25 @@ if __name__ == '__main__':
             'config': bitstring,
             'fitness': 0
         }
-        population.append(solution)
+        current_generation.append(solution)
 
-    print_population(population)
+    print_population(current_generation)
 
     # GENERATIONAL LOOP
     while(terminate == False):
         # EVALUATION        ===================================
-        for solution in population:
+        for solution in current_generation:
             config = solution['config']
             solution['fitness'] = fitness(config)
 
-        print_population(population)
+        print_population(current_generation)
 
         # TERMINATION       ===================================
         # In this problem, we don't have an ideal fitness if we can improve the cost-range tradeoff
         # So no fitness condition
 
         # Max generations reached?
-        if current_generation >= max_generations:
+        if generation_number >= max_generations:
             terminate = True
             break
 
@@ -135,21 +149,55 @@ if __name__ == '__main__':
         # ie if we don't see an increase of at least 5% for the average fitness, stop
         current_avg_fitness = calculate_avg_fitness()
         diff_avg_fitness = current_avg_fitness - previous_avg_fitness
-        if(current_generation > 0):
+        if(generation_number > 0):
             if ((diff_avg_fitness/previous_avg_fitness) * 100) < 5:
                 terminate = True
                 break
 
         # SELECTION       ===================================
         # Sort the population by fitness
-        sorted_population = sorted(population, key=lambda x: x['fitness'], reverse=True)
+        sorted_population = sorted(current_generation, key=lambda x: x['fitness'], reverse=True)
         next_generation = []
         for i in range(0, num_selected_solutions):
             next_generation.append(sorted_population[i])
 
+        # VARIATION       ===================================
+        # crossover
+        # we need to loop until the next generation is full
+        while(len(next_generation) < len(current_generation)):
+            # choose the top 2 in the population - and pop them off so we dont consider them anymore
+            parent_a = sorted_population.pop(0)
+            parent_b = sorted_population.pop(0)
+            offspring_c, offspring_d = crossover(parent_a, parent_b)
+            next_generation.append(offspring_c)
+            if len(next_generation) < len(current_generation):
+                next_generation.append(offspring_d)
+
+        # mutation
+        # choose a random number of solutions
+        num_solutions_to_mutate = random.randint(1, len(next_generation))
+        for i in range(1, num_solutions_to_mutate):
+            # choose a random solution
+
+            soln_index_to_mutate = random.randint(0, (len(next_generation)-1))
+            soln_to_mutate = next_generation[soln_index_to_mutate]
+
+            # choose a random number of bits to flip
+            num_bits_to_flip = random.randint(0, (len(possible_tower_placements)-1))
+
+            for i in range(0, num_bits_to_flip):
+                # choose a random bit and flip it
+                bit_index_to_flip = random.randint(0, (len(possible_tower_placements)-1))
+                config = soln_to_mutate['config']
+                if config[bit_index_to_flip] == 0:
+                    config[bit_index_to_flip] = 1
+                elif config[bit_index_to_flip] == 1:
+                    config[bit_index_to_flip] = 0
+                else:
+                    raise ValueError()
 
         previous_avg_fitness = current_avg_fitness
-        current_generation += 1
+        generation_number += 1
 
 
 
