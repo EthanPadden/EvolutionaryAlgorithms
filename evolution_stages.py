@@ -3,19 +3,19 @@ import random
 import numpy as np
 import settings as g
 import tools
+from Population import Population
+from Solution import Solution
 
 
 def initialise():
-    population = []
+    population = Population(0)
+
     for i in range(0, g.population_size):
         # create a random bitstring of length T
         bitstring = np.random.randint(0, 2, size=8, dtype=np.uint8)
         # Initially set the fitness value to 0 until we evaluate
-        solution = {
-            'config': bitstring,
-            'fitness': 0
-        }
-        population.append(solution)
+        solution = Solution(bitstring)
+        population.add_solution(solution)
 
     return population
 
