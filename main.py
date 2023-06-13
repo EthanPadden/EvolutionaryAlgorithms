@@ -2,6 +2,7 @@ from math import ceil
 import random
 import numpy as np
 import tools
+import settings as g
 
 if __name__ == '__main__':
     '''Single-objective problem:
@@ -29,33 +30,11 @@ if __name__ == '__main__':
     # solution: { bitstring : fitness }
     # population consists of N possible tower configurations
 
-    # GLOBAL VARIABLES (CAN BE ADJUSTED)
-    T = 8
-    population_size = 10
-    possible_tower_placements = [
-        {'range': 319, 'cost': 578},
-        {'range': 449, 'cost': 4937},
-        {'range': 771, 'cost': 4552},
-        {'range': 887, 'cost': 1819},
-        {'range': 722, 'cost': 1932},
-        {'range': 569, 'cost': 1958},
-        {'range': 760, 'cost': 3122},
-        {'range': 600, 'cost': 1320}
-    ]
 
-    # Termination criteria variables
-    max_generations = 20
-    terminate = False
-    generation_number = 0
-    percentage_performance_stagnation = 5
-    previous_avg_fitness = 0
-
-    # Selection variables
-    num_selected_solutions = 6
 
     # INITIALISATION    ===================================
     current_generation = []
-    for i in range(0, population_size):
+    for i in range(0, g.population_size):
         # create a random bitstring of length T
         bitstring = np.random.randint(0, 2, size=8, dtype=np.uint8)
         # Initially set the fitness value to 0 until we evaluate
@@ -66,18 +45,22 @@ if __name__ == '__main__':
         current_generation.append(solution)
 
     # GENERATIONAL LOOP
+    generation_number = 0
+    # TODO: remove this variable - not needed? just use break?
+    terminate = False
+    previous_avg_fitness = 0
     while(terminate == False):
         # EVALUATION        ===================================
         for solution in current_generation:
             config = solution['config']
-            solution['fitness'] = tools.fitness(config, possible_tower_placements)
+            solution['fitness'] = tools.fitness(config, g.possible_tower_placements)
 
         # TERMINATION       ===================================
         # In this problem, we don't have an ideal fitness if we can improve the cost-range tradeoff
         # So no fitness condition
 
         # Max generations reached?
-        if generation_number >= max_generations:
+        if generation_number >= g.max_generations:
             terminate = True
             break
 
@@ -95,7 +78,7 @@ if __name__ == '__main__':
         # Sort the population by fitness
         sorted_population = sorted(current_generation, key=lambda x: x['fitness'], reverse=True)
         next_generation = []
-        for i in range(0, num_selected_solutions):
+        for i in range(0, g.num_selected_solutions):
             next_generation.append(sorted_population[i])
 
         # VARIATION       ===================================
@@ -120,11 +103,11 @@ if __name__ == '__main__':
             soln_to_mutate = next_generation[soln_index_to_mutate]
 
             # choose a random number of bits to flip
-            num_bits_to_flip = random.randint(0, (len(possible_tower_placements)-1))
+            num_bits_to_flip = random.randint(0, (len(g.possible_tower_placements)-1))
 
             for i in range(0, num_bits_to_flip):
                 # choose a random bit and flip it
-                bit_index_to_flip = random.randint(0, (len(possible_tower_placements)-1))
+                bit_index_to_flip = random.randint(0, (len(g.possible_tower_placements)-1))
                 config = soln_to_mutate['config']
                 if config[bit_index_to_flip] == 0:
                     config[bit_index_to_flip] = 1
