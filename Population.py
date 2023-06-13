@@ -44,3 +44,4 @@ class Population:
     def sort(self):
         # Sort the population by fitness
         sorted_solutions = sorted(self.__solutions, key=lambda solution: solution.get_fitness())
+        self.__solutions = sorted_solutions
