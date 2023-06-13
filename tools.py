@@ -3,6 +3,9 @@ import math
 from tabulate import tabulate
 
 import settings as g
+from Solution import Solution
+
+
 def fitness(config):
     '''What could be a fitness function here?
     Maximise range
@@ -36,14 +39,14 @@ def fitness(config):
 
 
 def crossover(parent_a, parent_b):
-    config_a = parent_a['config']
-    config_b = parent_b['config']
+    config_a = parent_a.get_config()
+    config_b = parent_b.get_config()
     crossover_point = math.ceil(len(config_a)/2)
 
     config_c = np.concatenate((config_a[:crossover_point], config_b[crossover_point:]))
     config_d = np.concatenate((config_b[:crossover_point], config_a[crossover_point:]))
 
-    offspring_c = {'config': config_c, 'fitness': 0}
-    offspring_d = {'config': config_d, 'fitness': 0}
+    offspring_c = Solution(config_c)
+    offspring_d = Solution(config_d)
 
     return offspring_c, offspring_d

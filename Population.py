@@ -1,3 +1,5 @@
+import random
+
 from tabulate import tabulate
 
 import settings as g
@@ -45,3 +47,28 @@ class Population:
         # Sort the population by fitness
         sorted_solutions = sorted(self.__solutions, key=lambda solution: solution.get_fitness())
         self.__solutions = sorted_solutions
+
+    def mutate(self):
+        # choose a random number of solutions
+        num_solutions_to_mutate = random.randint(1, g.population_size)
+        for i in range(1, num_solutions_to_mutate):
+            # choose a random solution
+
+            soln_index_to_mutate = random.randint(0, (g.population_size - 1))
+            soln_to_mutate = self.__solutions[soln_index_to_mutate]
+
+            # choose a random number of bits to flip
+            num_bits_to_flip = random.randint(0, (len(g.possible_tower_placements) - 1))
+
+            for i in range(0, num_bits_to_flip):
+                # choose a random bit and flip it
+                bit_index_to_flip = random.randint(0, (len(g.possible_tower_placements) - 1))
+                config = soln_to_mutate.get_config()
+                if config[bit_index_to_flip] == 0:
+                    config[bit_index_to_flip] = 1
+                elif config[bit_index_to_flip] == 1:
+                    config[bit_index_to_flip] = 0
+                else:
+                    raise ValueError
+                soln_to_mutate.set_config(config)
+                # TODO: more efficient way

@@ -71,7 +71,7 @@ if __name__ == '__main__':
         next_gen = evo.select(current_gen)
 
         # # VARIATION       ===================================
-        # evo.variation(current_gen, next_gen)
+        evo.variation(current_gen, next_gen)
 
         prev_avg_fitness = current_avg_fitness
         current_gen = next_gen

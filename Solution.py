@@ -63,3 +63,9 @@ class Solution:
 
     def get_fitness(self):
         return self.__fitness
+
+    def get_config(self):
+        return self.__config
+
+    def set_config(self, config):
+        self.__config = config
