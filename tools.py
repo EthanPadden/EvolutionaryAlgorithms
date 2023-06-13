@@ -34,12 +34,6 @@ def fitness(config):
 
     return (100*sum_range) - sum_cost
 
-def calculate_avg_fitness(population):
-    sum_fitnesses = 0
-    for solution in population:
-        sum_fitnesses += solution['fitness']
-
-    return sum_fitnesses/len(population)
 
 def crossover(parent_a, parent_b):
     config_a = parent_a['config']

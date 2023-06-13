@@ -25,20 +25,18 @@ def evaluate(population):
 
 def select(current_gen, next_gen=None):
     # Sort the population by fitness
-    sorted_population = sorted(current_gen, key=lambda x: x['fitness'], reverse=True)
+    current_gen.sort()
 
-    output = 'SELECTION - SORTED FITNESSES:'
-    for solution in sorted_population:
-        output += f"\t{solution['fitness']}"
-    print(output)
+    print('SELECTION - SORTED FITNESSES:')
+    print(current_gen.to_string())
 
     output = f'SELECTION - {g.num_selected_solutions} SELECTED:\t\t'
     if(next_gen == None):
-        next_gen = []
+        next_gen = Population(current_gen.get_gen_num() + 1)
     for i in range(0, g.num_selected_solutions):
-        solution = sorted_population[i]
-        next_gen.append(solution)
-        output += f"\t{solution['fitness']}"
+        solution = current_gen.get_solutions()[i]
+        next_gen.add_solution(solution)
+        output += f"\t{solution.get_fitness()}"
 
     print(output)
     slots_left = g.population_size - g.num_selected_solutions

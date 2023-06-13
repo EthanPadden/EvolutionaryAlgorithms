@@ -45,26 +45,23 @@ if __name__ == '__main__':
         # EVALUATION        ===================================
         evo.evaluate(current_gen)
         print(current_gen.to_string())
-        break
 
-
-'''
         # TERMINATION       ===================================
         # In this problem, we don't have an ideal fitness if we can improve the cost-range tradeoff
         # So no fitness condition
 
         # Max generations reached?
-        if generation_number >= g.max_generations:
-            print(f'Max generations reached: {generation_number} >= {g.max_generations} - terminating...')
+        if current_gen.get_gen_num() >= g.max_generations:
+            print(f'Max generations reached: {current_gen.get_gen_num()} >= {g.max_generations} - terminating...')
             terminate = True
             break
 
         # Performance stagnation?
         # Instead of a threshold value, we can take this as a percentage
         # ie if we don't see an increase of at least 5% for the average fitness, stop
-        current_avg_fitness = tools.calculate_avg_fitness(current_gen)
+        current_avg_fitness = current_gen.calc_avg_fitness()
         diff_avg_fitness = current_avg_fitness - prev_avg_fitness
-        if(generation_number > 0):
+        if(current_gen.get_gen_num() > 0):
             if ((diff_avg_fitness / prev_avg_fitness) * 100) < 5:
                 print(f'Performance stagnation: {current_avg_fitness} - {prev_avg_fitness} = {diff_avg_fitness} - terminating...')
                 terminate = True
@@ -73,12 +70,11 @@ if __name__ == '__main__':
         # SELECTION       ===================================
         next_gen = evo.select(current_gen)
 
-        # VARIATION       ===================================
-        evo.variation(current_gen, next_gen)
+        # # VARIATION       ===================================
+        # evo.variation(current_gen, next_gen)
 
         prev_avg_fitness = current_avg_fitness
-        generation_number += 1
-        current_gen = next_gen'''
+        current_gen = next_gen
 
 
 

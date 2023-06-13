@@ -60,3 +60,6 @@ class Solution:
             sum_cost += tower_placement['cost']
 
         self.__fitness = (100 * sum_range) - sum_cost
+
+    def get_fitness(self):
+        return self.__fitness
