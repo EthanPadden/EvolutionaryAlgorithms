@@ -6,6 +6,7 @@ import settings as g
 import evolution_stages as evo
 
 if __name__ == '__main__':
+
     '''Single-objective problem:
     Problem: Optimizing the Placement of Cell Towers for Maximum Coverage
     * Imagine you are a telecommunication company tasked with optimizing the placement of cell towers in a given region to provide maximum coverage and minimize signal interference.
@@ -31,10 +32,9 @@ if __name__ == '__main__':
     # solution: { bitstring : fitness }
     # population consists of N possible tower configurations
 
-
-
     # INITIALISATION    ===================================
     current_generation = evo.initialise()
+    tools.print_population(current_generation, -1)
 
     # GENERATIONAL LOOP
     generation_number = 0
@@ -104,7 +104,7 @@ if __name__ == '__main__':
                 elif config[bit_index_to_flip] == 1:
                     config[bit_index_to_flip] = 0
                 else:
-                    raise ValueError()
+                    raise ValueError
 
         previous_avg_fitness = current_avg_fitness
         generation_number += 1

@@ -1,13 +1,54 @@
 import numpy as np
 import math
+import settings as g
+import tkinter as tk
+from tkinter import ttk
 
-def print_population(population):
-   for solution in population:
-       bitstring = ''.join(map(str, solution['config']))
-       fitness = solution['fitness']
-       print(f'{bitstring}\t{fitness}')
+def print_population(population, generation_number):
+    window = tk.Tk()
 
-def fitness(config, possible_tower_placements):
+    # Create a label widget
+    label = tk.Label(window, text=f'Generation = {generation_number}')
+
+    # Add the label to the window
+    label.pack()
+
+    # Create a Treeview widget
+    tree = ttk.Treeview(window, columns=('bitstring', 'fitness', 'Erange', 'Ecost'), show='headings')
+
+    # Set column headers
+    tree.heading('bitstring', text='bitstring')
+    tree.heading('fitness', text='fitness')
+    tree.heading('Erange', text='Erange')
+    tree.heading('Ecost', text='Ecost')
+
+    for solution in population:
+        config = solution['config']
+
+        bitstring = ''.join(map(str, config))
+        fitness = solution['fitness']
+        tower_placements = []
+
+        for i in range(0, len(config)):
+            if config[i] == 1:
+                tower_placements.append(g.possible_tower_placements[i])
+            elif config[i] != 0:
+                raise ValueError
+
+        total_range = 0
+        total_cost = 0
+        for tower_placement in tower_placements:
+            total_range += tower_placement['range']
+            total_cost += tower_placement['cost']
+
+        tree.insert('', 'end', values=(f'{bitstring}', f'{fitness}', f'{total_range}', f'{total_cost}'))
+
+    # Add the Treeview to the window
+    tree.pack()
+
+    window.mainloop()
+
+def fitness(config):
     '''What could be a fitness function here?
     Maximise range
     Minimise cost
@@ -25,7 +66,7 @@ def fitness(config, possible_tower_placements):
     tower_placements = []
     for i in range(0, len(config)):
         if config[i] == 1:
-            tower_placements.append(possible_tower_placements[i])
+            tower_placements.append(g.possible_tower_placements[i])
         elif config[i] != 0 and config[i] != 1:
             raise ValueError
 

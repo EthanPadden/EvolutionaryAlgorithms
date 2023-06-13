@@ -20,4 +20,4 @@ def initialise():
 def evaluate(population):
     for solution in population:
         config = solution['config']
-        solution['fitness'] = tools.fitness(config, g.possible_tower_placements)
+        solution['fitness'] = tools.fitness(config)
