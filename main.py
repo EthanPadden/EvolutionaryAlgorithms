@@ -40,11 +40,15 @@ if __name__ == '__main__':
     terminate = False
     prev_avg_fitness = 0
     print(current_gen.to_string())
-    '''
+
     while(terminate == False):
         # EVALUATION        ===================================
         evo.evaluate(current_gen)
+        print(current_gen.to_string())
+        break
 
+
+'''
         # TERMINATION       ===================================
         # In this problem, we don't have an ideal fitness if we can improve the cost-range tradeoff
         # So no fitness condition

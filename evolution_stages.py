@@ -20,9 +20,8 @@ def initialise():
     return population
 
 def evaluate(population):
-    for solution in population:
-        config = solution['config']
-        solution['fitness'] = tools.fitness(config)
+    for solution in population.get_solutions():
+        solution.calc_fitness()
 
 def select(current_gen, next_gen=None):
     # Sort the population by fitness

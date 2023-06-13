@@ -24,3 +24,6 @@ class Population:
             table_data.append(row_data)
 
         return tabulate(table_data)
+
+    def get_solutions(self):
+        return self.__solutions
