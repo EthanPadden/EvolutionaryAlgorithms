@@ -34,16 +34,17 @@ if __name__ == '__main__':
 
     # INITIALISATION    ===================================
     current_generation = evo.initialise()
-    tools.print_population(current_generation, -1)
 
     # GENERATIONAL LOOP
     generation_number = 0
     # TODO: remove this variable - not needed? just use break?
     terminate = False
     previous_avg_fitness = 0
+    tools.print_population(current_generation, generation_number, 'INITIALISATION')
     while(terminate == False):
         # EVALUATION        ===================================
         evo.evaluate(current_generation)
+        tools.print_population(current_generation, generation_number, 'EVALUATION')
 
         # TERMINATION       ===================================
         # In this problem, we don't have an ideal fitness if we can improve the cost-range tradeoff

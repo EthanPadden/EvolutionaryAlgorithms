@@ -1,27 +1,14 @@
 import numpy as np
 import math
+from tabulate import tabulate
+
 import settings as g
 import tkinter as tk
 from tkinter import ttk
 
-def print_population(population, generation_number):
-    window = tk.Tk()
-
-    # Create a label widget
-    label = tk.Label(window, text=f'Generation = {generation_number}')
-
-    # Add the label to the window
-    label.pack()
-
-    # Create a Treeview widget
-    tree = ttk.Treeview(window, columns=('bitstring', 'fitness', 'Erange', 'Ecost'), show='headings')
-
-    # Set column headers
-    tree.heading('bitstring', text='bitstring')
-    tree.heading('fitness', text='fitness')
-    tree.heading('Erange', text='Erange')
-    tree.heading('Ecost', text='Ecost')
-
+def print_population(population, generation_number, evo_stage):
+    print(f'Gen = {generation_number}\t{evo_stage}')
+    table_data = [['bitstring', 'fitness', 'Erange', 'Ecost']]
     for solution in population:
         config = solution['config']
 
@@ -41,12 +28,11 @@ def print_population(population, generation_number):
             total_range += tower_placement['range']
             total_cost += tower_placement['cost']
 
-        tree.insert('', 'end', values=(f'{bitstring}', f'{fitness}', f'{total_range}', f'{total_cost}'))
+        row_data = [bitstring, str(fitness), str(total_range), str(total_cost)]
+        table_data.append(row_data)
+    print(tabulate(table_data))
 
-    # Add the Treeview to the window
-    tree.pack()
 
-    window.mainloop()
 
 def fitness(config):
     '''What could be a fitness function here?
