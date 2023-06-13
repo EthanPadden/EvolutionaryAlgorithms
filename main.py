@@ -39,7 +39,7 @@ if __name__ == '__main__':
     generation_number = 0
     # TODO: remove this variable - not needed? just use break?
     terminate = False
-    previous_avg_fitness = 0
+    prev_avg_fitness = 0
     tools.print_population(current_generation, generation_number, 'INITIALISATION')
     while(terminate == False):
         # EVALUATION        ===================================
@@ -52,6 +52,7 @@ if __name__ == '__main__':
 
         # Max generations reached?
         if generation_number >= g.max_generations:
+            print(f'Max generations reached: {generation_number} >= {g.max_generations} - terminating...')
             terminate = True
             break
 
@@ -59,9 +60,10 @@ if __name__ == '__main__':
         # Instead of a threshold value, we can take this as a percentage
         # ie if we don't see an increase of at least 5% for the average fitness, stop
         current_avg_fitness = tools.calculate_avg_fitness(current_generation)
-        diff_avg_fitness = current_avg_fitness - previous_avg_fitness
+        diff_avg_fitness = current_avg_fitness - prev_avg_fitness
         if(generation_number > 0):
-            if ((diff_avg_fitness/previous_avg_fitness) * 100) < 5:
+            if ((diff_avg_fitness / prev_avg_fitness) * 100) < 5:
+                print(f'Performance stagnation: {current_avg_fitness} - {prev_avg_fitness} = {diff_avg_fitness} - terminating...')
                 terminate = True
                 break
 
@@ -107,7 +109,7 @@ if __name__ == '__main__':
                 else:
                     raise ValueError
 
-        previous_avg_fitness = current_avg_fitness
+        prev_avg_fitness = current_avg_fitness
         generation_number += 1
 
 
