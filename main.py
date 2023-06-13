@@ -75,7 +75,7 @@ if __name__ == '__main__':
 
         prev_avg_fitness = current_avg_fitness
         generation_number += 1
-
+        current_gen = next_gen
 
 
 
