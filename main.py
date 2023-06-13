@@ -34,16 +34,18 @@ if __name__ == '__main__':
 
     # INITIALISATION    ===================================
     current_gen = evo.initialise()
+    print(f"{'*'*15} {current_gen.get_gen_num()}\tINITIALISATION {'*'*15}")
+    print(current_gen.to_string())
 
     # GENERATIONAL LOOP
     # TODO: remove this variable - not needed? just use break?
     terminate = False
     prev_avg_fitness = 0
-    print(current_gen.to_string())
 
     while(terminate == False):
         # EVALUATION        ===================================
         evo.evaluate(current_gen)
+        print(f"\n\n{'*' * 15} {current_gen.get_gen_num()}\tEVALUATION {'*' * 15}")
         print(current_gen.to_string())
 
         # TERMINATION       ===================================
@@ -51,6 +53,7 @@ if __name__ == '__main__':
         # So no fitness condition
 
         # Max generations reached?
+        print(f"\n\n{'*' * 15} {current_gen.get_gen_num()}\tTERMINATION {'*' * 15}")
         if current_gen.get_gen_num() >= g.max_generations:
             print(f'Max generations reached: {current_gen.get_gen_num()} >= {g.max_generations} - terminating...')
             terminate = True
@@ -66,11 +69,14 @@ if __name__ == '__main__':
                 print(f'Performance stagnation: {current_avg_fitness} - {prev_avg_fitness} = {diff_avg_fitness} - terminating...')
                 terminate = True
                 break
+        print('continue!')
 
         # SELECTION       ===================================
+        print(f"\n\n{'*' * 15} {current_gen.get_gen_num()}\tSELECTION {'*' * 15}")
         next_gen = evo.select(current_gen)
 
         # # VARIATION       ===================================
+        print(f"\n\n{'*' * 15} {current_gen.get_gen_num()}\tVARIATION {'*' * 15}")
         evo.variation(current_gen, next_gen)
 
         prev_avg_fitness = current_avg_fitness

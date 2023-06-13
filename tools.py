@@ -5,7 +5,6 @@ from tabulate import tabulate
 import settings as g
 from Solution import Solution
 
-
 def fitness(config):
     '''What could be a fitness function here?
     Maximise range

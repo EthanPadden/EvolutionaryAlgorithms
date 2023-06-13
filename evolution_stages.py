@@ -75,6 +75,8 @@ def variation(current_gen, next_gen):
             output = f"CROSSOVER:\t{parent_a.get_config()} + {parent_b.get_config()} = {offspring_c.get_config()} + {offspring_d.get_config()}"
             output += f"\n\t\t\t{str(parent_a.get_fitness())} + {str(parent_b.get_fitness())} = {str(offspring_c.get_fitness())} + {str(offspring_d.get_fitness())}"
             print(output)
+            offspring_c.calc_fitness()
+            offspring_d.calc_fitness()
             next_gen.add_solution(offspring_c)
             if len(next_gen.get_solutions()) < g.population_size:
                 next_gen.add_solution(offspring_d)
