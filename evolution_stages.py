@@ -27,11 +27,23 @@ def evaluate(population):
 def select(current_gen, next_gen=None):
     # Sort the population by fitness
     sorted_population = sorted(current_gen, key=lambda x: x['fitness'], reverse=True)
+
+    output = 'SELECTION - SORTED FITNESSES:'
+    for solution in sorted_population:
+        output += f"\t{solution['fitness']}"
+    print(output)
+
+    output = f'SELECTION - {g.num_selected_solutions} SELECTED:\t\t'
     if(next_gen == None):
         next_gen = []
     for i in range(0, g.num_selected_solutions):
-        next_gen.append(sorted_population[i])
+        solution = sorted_population[i]
+        next_gen.append(solution)
+        output += f"\t{solution['fitness']}"
 
+    print(output)
+    slots_left = g.population_size - g.num_selected_solutions
+    print(f'SELECTION - slots left = {slots_left}')
     return next_gen
 
 def variation(current_gen, next_gen):
