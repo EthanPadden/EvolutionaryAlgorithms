@@ -3,6 +3,7 @@ import random
 import numpy as np
 import tools
 import settings as g
+import evolution_stages as evo
 
 if __name__ == '__main__':
     '''Single-objective problem:
@@ -33,16 +34,7 @@ if __name__ == '__main__':
 
 
     # INITIALISATION    ===================================
-    current_generation = []
-    for i in range(0, g.population_size):
-        # create a random bitstring of length T
-        bitstring = np.random.randint(0, 2, size=8, dtype=np.uint8)
-        # Initially set the fitness value to 0 until we evaluate
-        solution = {
-            'config': bitstring,
-            'fitness': 0
-        }
-        current_generation.append(solution)
+    current_generation = evo.initialise()
 
     # GENERATIONAL LOOP
     generation_number = 0
