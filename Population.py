@@ -11,6 +11,10 @@ class Population:
             self.__gen_num = gen_num
         self.__solutions = []
 
+
+    def clear_solutions(self):
+        self.__solutions = []
+
     def add_solution(self, solution):
         if len(self.__solutions) < g.population_size:
             self.__solutions.append(solution)

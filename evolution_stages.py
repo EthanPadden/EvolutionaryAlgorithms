@@ -44,10 +44,11 @@ def select(current_gen, next_gen=None):
     return next_gen
 
 def variation(current_gen, next_gen):
+    current_gen.sort()
+
     # CROSSOVER
     if g.crossover == True:
         # we need to loop until the next generation is full
-        current_gen.sort()
 
         output = 'VARIATION - SORTED FITNESSES:'
         for solution in current_gen.get_solutions():
@@ -80,7 +81,11 @@ def variation(current_gen, next_gen):
             next_gen.add_solution(offspring_c)
             if len(next_gen.get_solutions()) < g.population_size:
                 next_gen.add_solution(offspring_d)
-
+    else:
+        # Just fill up the rest of the slots with the sorted population
+        next_gen.clear_solutions()
+        for solution in current_gen.get_solutions():
+            next_gen.add_solution(solution)
     # mutation
     if g.mutation == True:
         next_gen.mutate()
