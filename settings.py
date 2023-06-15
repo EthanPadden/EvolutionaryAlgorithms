@@ -16,7 +16,7 @@ output_filename = 'output.csv'
 # Available graphs:
 #   1 - Scatter plot of total range vs total cost where each point is a solution in a population
 #   2 - Line graph of fitness (best/worst/avg) against generation number
-graph_option = 1
+graph_option = 2
 
 '''Initialisation variables'''
 population_size = 10

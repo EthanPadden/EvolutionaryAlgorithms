@@ -55,7 +55,7 @@ class Population:
 
     def sort(self):
         # Sort the population by fitness
-        sorted_solutions = sorted(self.__solutions, key=lambda solution: solution.get_fitness())
+        sorted_solutions = sorted(self.__solutions, key=lambda solution: solution.get_fitness(), reverse=True)
         self.__solutions = sorted_solutions
 
     def mutate(self):
