@@ -2,7 +2,7 @@ import settings as g
 class Solution:
     def __init__(self, config):
         self.__config = config
-        self.__fitness = None
+        self.__fitness = 0
 
     def to_string(self):
         bitstring = ''.join(map(str, self.__config))

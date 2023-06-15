@@ -45,7 +45,10 @@ def line_graph_fitnesses(population_group_data):
             raise ValueError
 
         gen_num = entry[0]
-        population_data = entry[3]
+        evo_stage = entry[1]
+        if evo_stage != 'EVALUATION':
+            continue
+        population_data = entry[2]
 
         total_fitness = 0
         for solution_data in population_data:
@@ -129,5 +132,5 @@ if __name__ == '__main__':
 
                 row = next(reader, None)
             population_group_data.pop(0)
-            print(population_group_data)
+            line_graph_fitnesses(population_group_data)
 
