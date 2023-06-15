@@ -10,6 +10,10 @@ possible_tower_placements = [
     {'range': 600, 'cost': 1320}
 ]
 
+'''Output settings'''
+output_filename = 'output.csv'
+title_flag = '***'
+
 '''Initialisation variables'''
 population_size = 10
 

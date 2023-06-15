@@ -1,3 +1,4 @@
+import csv
 from math import ceil
 import random
 import numpy as np
@@ -33,60 +34,69 @@ if __name__ == '__main__':
     # solution: { bitstring : fitness }
     # population consists of N possible tower configurations
 
-    # INITIALISATION    ===================================
-    current_gen = evo.initialise()
-    print(f"{'*'*15} {current_gen.get_gen_num()}\tINITIALISATION {'*'*15}")
-    print(current_gen.to_string())
+    with open(g.output_filename, 'w', newline='') as file:
+        writer = csv.writer(file)
 
-    # GENERATIONAL LOOP
-    # TODO: remove this variable - not needed? just use break?
-    terminate = False
-    prev_avg_fitness = 0
+        # INITIALISATION    ===================================
+        current_gen = evo.initialise()
+        # print(f"{'*' * 15} {current_gen.get_gen_num()}\tINITIALISATION {'*' * 15}")
+        # print(current_gen.to_string())
+        writer.writerow([g.title_flag, current_gen.get_gen_num(), 'INITIALISATION'])
+        writer.writerows(current_gen.to_csv())
 
-    while(terminate == False):
-        # EVALUATION        ===================================
-        evo.evaluate(current_gen)
-        print(f"\n\n{'*' * 15} {current_gen.get_gen_num()}\tEVALUATION {'*' * 15}")
-        print(current_gen.to_string())
+        # GENERATIONAL LOOP
+        # TODO: remove this variable - not needed? just use break?
+        terminate = False
+        prev_avg_fitness = 0
 
-        # TERMINATION       ===================================
-        # In this problem, we don't have an ideal fitness if we can improve the cost-range tradeoff
-        # So no fitness condition
+        while(terminate == False):
+            # EVALUATION        ===================================
+            evo.evaluate(current_gen)
+            # print(f"\n\n{'*' * 15} {current_gen.get_gen_num()}\tEVALUATION {'*' * 15}")
+            # print(current_gen.to_string())
+            writer.writerow([g.title_flag, current_gen.get_gen_num(), 'EVALUATION'])
+            writer.writerows(current_gen.to_csv())
 
-        # Max generations reached?
-        print(f"\n\n{'*' * 15} {current_gen.get_gen_num()}\tTERMINATION {'*' * 15}")
-        if current_gen.get_gen_num() >= g.max_generations:
-            print(f'Max generations reached: {current_gen.get_gen_num()} >= {g.max_generations} - terminating...')
-            terminate = True
-            break
+            # TERMINATION       ===================================
+            # In this problem, we don't have an ideal fitness if we can improve the cost-range tradeoff
+            # So no fitness condition
 
-        # Performance stagnation?
-        # Instead of a threshold value, we can take this as a percentage
-        # ie if we don't see an increase of at least 5% for the average fitness, stop
-        current_avg_fitness = current_gen.calc_avg_fitness()
-        diff_avg_fitness = current_avg_fitness - prev_avg_fitness
-        if(current_gen.get_gen_num() > 0):
-            if ((diff_avg_fitness / prev_avg_fitness) * 100) < 5:
-                print(f'Performance stagnation: {current_avg_fitness} - {prev_avg_fitness} = {diff_avg_fitness} - terminating...')
+            # Max generations reached?
+            writer.writerow([g.title_flag, current_gen.get_gen_num(), 'TERMINATION'])
+
+            # print(f"\n\n{'*' * 15} {current_gen.get_gen_num()}\tTERMINATION {'*' * 15}")
+            if current_gen.get_gen_num() >= g.max_generations:
+                # print(f'Max generations reached: {current_gen.get_gen_num()} >= {g.max_generations} - terminating...')
                 terminate = True
+                writer.writerow(['max gens', 'true', 'terminate', 'true'])
                 break
-        print('continue!')
+            writer.writerow(['max gens', 'false', 'terminate', 'false'])
 
-        # SELECTION       ===================================
-        print(f"\n\n{'*' * 15} {current_gen.get_gen_num()}\tSELECTION {'*' * 15}")
-        next_gen = evo.select(current_gen)
+            # Performance stagnation?
+            # Instead of a threshold value, we can take this as a percentage
+            # ie if we don't see an increase of at least 5% for the average fitness, stop
+            current_avg_fitness = current_gen.calc_avg_fitness()
+            diff_avg_fitness = current_avg_fitness - prev_avg_fitness
+            if(current_gen.get_gen_num() > 0):
+                if ((diff_avg_fitness / prev_avg_fitness) * 100) < 5:
+                    # print(f'Performance stagnation: {current_avg_fitness} - {prev_avg_fitness} = {diff_avg_fitness} - terminating...')
+                    writer.writerow(['perf stagn', 'true', current_avg_fitness, prev_avg_fitness, diff_avg_fitness])
+                    terminate = True
+                    break
+            # print('continue!')
+            writer.writerow(['perf stagn', 'false', 'terminate', 'false'])
 
-        # # VARIATION       ===================================
-        print(f"\n\n{'*' * 15} {current_gen.get_gen_num()}\tVARIATION {'*' * 15}")
-        evo.variation(current_gen, next_gen)
+            # SELECTION       ===================================
+            # print(f"\n\n{'*' * 15} {current_gen.get_gen_num()}\tSELECTION {'*' * 15}")
+            next_gen = evo.select(current_gen)
+            writer.writerow([g.title_flag, current_gen.get_gen_num(), 'SELECTION'])
+            writer.writerows(current_gen.to_csv())
 
-        prev_avg_fitness = current_avg_fitness
-        current_gen = next_gen
+            # # VARIATION       ===================================
+            # print(f"\n\n{'*' * 15} {current_gen.get_gen_num()}\tVARIATION {'*' * 15}")
+            evo.variation(current_gen, next_gen)
+            writer.writerow([g.title_flag, current_gen.get_gen_num(), 'VARIATION'])
+            writer.writerows(current_gen.to_csv())
 
-
-
-
-
-
-
-
+            prev_avg_fitness = current_avg_fitness
+            current_gen = next_gen

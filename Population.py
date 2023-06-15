@@ -25,7 +25,6 @@ class Population:
         return self.__gen_num
 
     def to_string(self):
-        output = f'gen = {self.__gen_num}'
         table_data = [['bitstring', 'fitness', 'Erange', 'Ecost']]
 
         for solution in self.__solutions:
@@ -33,6 +32,13 @@ class Population:
             table_data.append(row_data)
 
         return tabulate(table_data)
+
+    def to_csv(self):
+        rows = []
+        for solution in self.__solutions:
+            row_data = solution.to_csv()
+            rows.append(row_data)
+        return rows
 
     def get_solutions(self):
         return self.__solutions
