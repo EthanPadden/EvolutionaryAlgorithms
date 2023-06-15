@@ -6,6 +6,7 @@ import tools
 import settings as g
 import evolution_stages as evo
 import fitness_functions as f
+from Solution import Solution
 
 if __name__ == '__main__':
 
@@ -33,14 +34,22 @@ if __name__ == '__main__':
     # TODO: each solution will have their fitness associated with them and stored
     # solution: { bitstring : fitness }
     # population consists of N possible tower configurations
+    with open(g.input_filename, 'r') as file:
+        reader = csv.reader(file)
+        next(reader)
+        for row in reader:
+            Solution.possible_tower_placements.append(
+                {
+                    'range': int(row[0]),
+                    'cost': int(row[1])
+                }
+            )
 
     with open(g.output_filename, 'w', newline='') as file:
         writer = csv.writer(file)
 
         # INITIALISATION    ===================================
         current_gen = evo.initialise()
-        # print(f"{'*' * 15} {current_gen.get_gen_num()}\tINITIALISATION {'*' * 15}")
-        # print(current_gen.to_string())
         writer.writerow(['STAGE', 'INITIALISATION'])
         writer.writerows(current_gen.to_csv())
 

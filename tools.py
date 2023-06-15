@@ -23,7 +23,7 @@ def fitness(config):
     tower_placements = []
     for i in range(0, len(config)):
         if config[i] == 1:
-            tower_placements.append(g.possible_tower_placements[i])
+            tower_placements.append(Solution.possible_tower_placements[i])
         elif config[i] != 0 and config[i] != 1:
             raise ValueError
 

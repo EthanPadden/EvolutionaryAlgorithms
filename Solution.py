@@ -1,8 +1,12 @@
+import csv
+
 import settings as g
 class Solution:
+    possible_tower_placements = []
     def __init__(self, config):
         self.__config = config
         self.__fitness = 0
+
 
     def to_string(self):
         bitstring = ''.join(map(str, self.__config))
@@ -10,7 +14,7 @@ class Solution:
         tower_placements = []
         for i in range(0, len(self.__config)):
             if self.__config[i] == 1:
-                tower_placements.append(g.possible_tower_placements[i])
+                tower_placements.append(Solution.possible_tower_placements[i])
             elif self.__config[i] != 0:
                 raise ValueError
 
@@ -36,7 +40,7 @@ class Solution:
         tower_placements = []
         for i in range(0, len(self.__config)):
             if self.__config[i] == 1:
-                tower_placements.append(g.possible_tower_placements[i])
+                tower_placements.append(Solution.possible_tower_placements[i])
             elif self.__config[i] != 0:
                 raise ValueError
 
@@ -73,7 +77,7 @@ class Solution:
         tower_placements = []
         for i in range(0, len(self.__config)):
             if self.__config[i] == 1:
-                tower_placements.append(g.possible_tower_placements[i])
+                tower_placements.append(Solution.possible_tower_placements[i])
             elif self.__config[i] != 0 and self.__config[i] != 1:
                 raise ValueError
 

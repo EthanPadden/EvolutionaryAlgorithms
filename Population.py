@@ -3,6 +3,9 @@ import random
 from tabulate import tabulate
 
 import settings as g
+from Solution import Solution
+
+
 class Population:
     def __init__(self, gen_num):
         if gen_num >= g.max_generations:
@@ -68,11 +71,11 @@ class Population:
             soln_to_mutate = self.__solutions[soln_index_to_mutate]
 
             # choose a random number of bits to flip
-            num_bits_to_flip = random.randint(0, (len(g.possible_tower_placements) - 1))
+            num_bits_to_flip = random.randint(0, (len(Solution.possible_tower_placements) - 1))
 
             for i in range(0, num_bits_to_flip):
                 # choose a random bit and flip it
-                bit_index_to_flip = random.randint(0, (len(g.possible_tower_placements) - 1))
+                bit_index_to_flip = random.randint(0, (len(Solution.possible_tower_placements) - 1))
                 config = soln_to_mutate.get_config()
                 if config[bit_index_to_flip] == 0:
                     config[bit_index_to_flip] = 1

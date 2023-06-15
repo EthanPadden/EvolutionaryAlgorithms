@@ -1,22 +1,11 @@
-'''Problem data'''
-possible_tower_placements = [
-    {'range': 319, 'cost': 578},
-    {'range': 449, 'cost': 4937},
-    {'range': 771, 'cost': 4552},
-    {'range': 887, 'cost': 1819},
-    {'range': 722, 'cost': 1932},
-    {'range': 569, 'cost': 1958},
-    {'range': 760, 'cost': 3122},
-    {'range': 600, 'cost': 1320}
-]
-
-'''Output settings'''
-output_filename = 'output.csv'
+'''IO settings'''
+input_filename = 'input/input 1.csv'
+output_filename = 'output/output_temp.csv'
 
 # Available graphs:
 #   1 - Scatter plot of total range vs total cost where each point is a solution in a population
 #   2 - Line graph of fitness (best/worst/avg) against generation number
-graph_option = 2
+graph_option = 1
 
 '''Initialisation variables'''
 population_size = 10
