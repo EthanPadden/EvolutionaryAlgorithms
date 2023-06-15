@@ -41,7 +41,7 @@ if __name__ == '__main__':
         current_gen = evo.initialise()
         # print(f"{'*' * 15} {current_gen.get_gen_num()}\tINITIALISATION {'*' * 15}")
         # print(current_gen.to_string())
-        writer.writerow([g.title_flag, current_gen.get_gen_num(), 'INITIALISATION'])
+        writer.writerow(['STAGE', 'INITIALISATION'])
         writer.writerows(current_gen.to_csv())
 
         # GENERATIONAL LOOP
@@ -50,11 +50,13 @@ if __name__ == '__main__':
         prev_avg_fitness = 0
 
         while(terminate == False):
+            writer.writerow(['GEN', current_gen.get_gen_num()])
+
             # EVALUATION        ===================================
             evo.evaluate(current_gen)
             # print(f"\n\n{'*' * 15} {current_gen.get_gen_num()}\tEVALUATION {'*' * 15}")
             # print(current_gen.to_string())
-            writer.writerow([g.title_flag, current_gen.get_gen_num(), 'EVALUATION'])
+            writer.writerow(['STAGE', 'EVALUATION'])
             writer.writerows(current_gen.to_csv())
 
             # TERMINATION       ===================================
@@ -62,7 +64,7 @@ if __name__ == '__main__':
             # So no fitness condition
 
             # Max generations reached?
-            writer.writerow([g.title_flag, current_gen.get_gen_num(), 'TERMINATION'])
+            writer.writerow(['STAGE', 'TERMINATION'])
 
             # print(f"\n\n{'*' * 15} {current_gen.get_gen_num()}\tTERMINATION {'*' * 15}")
             if current_gen.get_gen_num() >= g.max_generations:
@@ -89,13 +91,13 @@ if __name__ == '__main__':
             # SELECTION       ===================================
             # print(f"\n\n{'*' * 15} {current_gen.get_gen_num()}\tSELECTION {'*' * 15}")
             next_gen = evo.select(current_gen)
-            writer.writerow([g.title_flag, current_gen.get_gen_num(), 'SELECTION'])
+            writer.writerow(['STAGE', 'SELECTION'])
             writer.writerows(current_gen.to_csv())
 
             # # VARIATION       ===================================
             # print(f"\n\n{'*' * 15} {current_gen.get_gen_num()}\tVARIATION {'*' * 15}")
             evo.variation(current_gen, next_gen)
-            writer.writerow([g.title_flag, current_gen.get_gen_num(), 'VARIATION'])
+            writer.writerow(['STAGE', 'VARIATION'])
             writer.writerows(current_gen.to_csv())
 
             prev_avg_fitness = current_avg_fitness
