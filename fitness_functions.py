@@ -14,22 +14,14 @@ def fitness_fn_1(solution):
         TODO: also - is there a maximum cost that we cannot exceed?
         TODO: similarly - is there a minimum range below which the solution is not viable?
         '''
-    # Get the corresponding tower placements as in the bitstring
-    config = solution.get_config()
-    tower_placements = []
-    for i in range(0, len(config)):
-        if config[i] == 1:
-            tower_placements.append(g.possible_tower_placements[i])
-        elif config[i] != 0 and config[i] != 1:
-            raise ValueError
+    sum_range, sum_cost = solution.get_totals()
+    return g.m*((g.x * sum_range) - (g.y * sum_cost))
 
-    # Sum the variables in this solution
-    sum_range = 0
-    sum_cost = 0
-    for tower_placement in tower_placements:
-        sum_range += tower_placement['range']
-        sum_cost += tower_placement['cost']
+def fitness_fn_2(solution):
+    # fitness = m * (sum_range/(sum_cost + z))
+    # where x is a very small value to account for the edge case where sum_cost = 0
+    sum_range, sum_cost = solution.get_totals()
+    return g.m*(sum_range/(sum_cost + g.z))
 
-    return (g.x * sum_range) - (g.y * sum_cost)
 
-fitness_funtions = [fitness_fn_1]
+fitness_funtions = [fitness_fn_1, fitness_fn_2]

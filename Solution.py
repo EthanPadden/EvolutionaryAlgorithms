@@ -41,3 +41,21 @@ class Solution:
 
     def set_config(self, config):
         self.__config = config
+
+    def get_totals(self):
+        # Get the corresponding tower placements as in the bitstring
+        tower_placements = []
+        for i in range(0, len(self.__config)):
+            if self.__config[i] == 1:
+                tower_placements.append(g.possible_tower_placements[i])
+            elif self.__config[i] != 0 and self.__config[i] != 1:
+                raise ValueError
+
+        # Sum the variables in this solution
+        sum_range = 0
+        sum_cost = 0
+        for tower_placement in tower_placements:
+            sum_range += tower_placement['range']
+            sum_cost += tower_placement['cost']
+
+        return sum_range, sum_cost

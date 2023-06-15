@@ -14,11 +14,15 @@ possible_tower_placements = [
 population_size = 10
 
 '''Evaluation variables'''
-fitness_fn_num = 1
-# fitness = (x * sum_range) - (y * sum_cost)
+# m is a multiplier that should not affect the fitness, just makes it easier for analysis
+m = 1000
+
+fitness_fn_num = 2
+# fitness_fn_1 = m * ((x * sum_range) - (y * sum_cost))
 x = 1
 y = 1
-# Alt fitness = 1/(|sum_range - sum_cost|)
+# fitness_fn_2 = m * (sum_range/(sum_cost + z))
+z = 0.000001
 
 '''Termination criteria variables'''
 max_generations = 20
