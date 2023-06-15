@@ -4,6 +4,7 @@ import numpy as np
 import tools
 import settings as g
 import evolution_stages as evo
+import fitness_functions as f
 
 if __name__ == '__main__':
 

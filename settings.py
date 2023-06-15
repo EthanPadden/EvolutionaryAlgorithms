@@ -14,9 +14,11 @@ possible_tower_placements = [
 population_size = 10
 
 '''Evaluation variables'''
+fitness_fn_num = 1
 # fitness = (x * sum_range) - (y * sum_cost)
-x = 100
+x = 1
 y = 1
+# Alt fitness = 1/(|sum_range - sum_cost|)
 
 '''Termination criteria variables'''
 max_generations = 20

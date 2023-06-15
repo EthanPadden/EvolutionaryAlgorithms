@@ -5,6 +5,7 @@ import settings as g
 import tools
 from Population import Population
 from Solution import Solution
+import fitness_functions as f
 
 
 def initialise():
@@ -20,8 +21,9 @@ def initialise():
     return population
 
 def evaluate(population):
+    fitness_function = f.fitness_funtions[g.fitness_fn_num-1]
     for solution in population.get_solutions():
-        solution.calc_fitness()
+        solution.calc_fitness(fitness_function)
 
 def select(current_gen, next_gen=None):
     # Sort the population by fitness
@@ -76,8 +78,9 @@ def variation(current_gen, next_gen):
             output = f"CROSSOVER:\t{parent_a.get_config()} + {parent_b.get_config()} = {offspring_c.get_config()} + {offspring_d.get_config()}"
             output += f"\n\t\t\t{str(parent_a.get_fitness())} + {str(parent_b.get_fitness())} = {str(offspring_c.get_fitness())} + {str(offspring_d.get_fitness())}"
             print(output)
-            offspring_c.calc_fitness()
-            offspring_d.calc_fitness()
+            fitness_function = f.fitness_funtions[g.fitness_fn_num-1]
+            offspring_c.calc_fitness(fitness_function)
+            offspring_d.calc_fitness(fitness_function)
             next_gen.add_solution(offspring_c)
             if len(next_gen.get_solutions()) < g.population_size:
                 next_gen.add_solution(offspring_d)
