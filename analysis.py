@@ -40,6 +40,9 @@ TODO: best and worst fitness not just avg
 def line_graph_fitnesses(population_group_data):
     gen_nums = []
     avg_fitnesses = []
+    best_fitnesses = []
+    worst_fitnesses = []
+
     for entry in population_group_data:
         if len(entry) != 3:
             raise ValueError
@@ -50,16 +53,22 @@ def line_graph_fitnesses(population_group_data):
             continue
         population_data = entry[2]
 
+        fitnesses = []
         total_fitness = 0
         for solution_data in population_data:
             total_fitness += solution_data[1]
+            fitnesses.append(solution_data[1])
         avg_fitness = total_fitness/g.population_size
-
+        best_fitnesses.append(max(fitnesses))
+        worst_fitnesses.append(min(fitnesses))
         gen_nums.append(gen_num)
         avg_fitnesses.append(avg_fitness)
 
-    plt.plot(gen_nums, avg_fitnesses, marker='o', linestyle='-', color='b')
-    plt.title('Average fitnesses')
+    plt.plot(gen_nums, avg_fitnesses, marker='o', linestyle='-', color='b', label='avg')
+    plt.plot(gen_nums, best_fitnesses, marker='o', linestyle='-', color='g', label='best')
+    plt.plot(gen_nums, worst_fitnesses, marker='o', linestyle='-', color='r', label='worst')
+
+    plt.title('Fitnesses')
     plt.xlabel('Generation')
     plt.ylabel('Avg fitness')
     plt.show()
