@@ -98,3 +98,6 @@ class Population:
 
     def size(self):
         return len(self.__solutions)
+
+    def get_solution(self, i):
+        return self.__solutions[i]

@@ -97,3 +97,4 @@ class Solution:
         other_soln_totals = other_solution.get_totals()
 
         return ((this_soln_totals[0] > other_soln_totals[0]) and (this_soln_totals[1] < other_soln_totals[1]))
+    

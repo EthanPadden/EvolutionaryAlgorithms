@@ -37,7 +37,7 @@ def select_by_sorting(current_gen, next_gen=None):
     if(next_gen == None):
         next_gen = Population(current_gen.get_gen_num() + 1)
     for i in range(0, g.num_selected_solutions):
-        solution = current_gen.get_solutions()[i]
+        solution = current_gen.get_solution(i)
         next_gen.add_solution(solution)
         output += f"\t{solution.get_fitness()}"
 
@@ -86,7 +86,7 @@ def select_by_examining_dominance_relationships(current_gen, next_gen=None):
     compare_index = 0
     while (next_gen.size() > g.num_selected_solutions) and compare_index < current_gen.size():
         # Solution we are considering out of the current generation
-        compare_soln = current_gen.get_solutions()[compare_index]
+        compare_soln = current_gen.get_solution(compare_index)
 
         # For every other solution - worst to best
         for other_soln_index in range((next_gen.size()-1), compare_index, -1):
@@ -95,7 +95,7 @@ def select_by_examining_dominance_relationships(current_gen, next_gen=None):
             elif next_gen.size() < g.num_selected_solutions:
                 raise ValueError
             # Solution to compare to out of the next generation
-            other_soln = next_gen.get_solutions()[other_soln_index]
+            other_soln = next_gen.get_solution(other_soln_index)
             # we can use the dominates method regardless of which member the solutions were sorted by
             if compare_soln.dominates(other_soln):
                 # get rid of the other solution in the next generation
@@ -107,6 +107,7 @@ def select_by_examining_dominance_relationships(current_gen, next_gen=None):
     # At this point, the compare index could reach the end of the population before next_gen has reached the target size
     # In this case, we just remove the worst solutions until the next_gen is of the target size
     while (next_gen.size() > g.num_selected_solutions):
+        # TODO: change to remove_solution(i=None)
         next_gen.get_solutions().pop()
 
     return next_gen
@@ -128,8 +129,7 @@ def variation(current_gen, next_gen):
         if (next_gen == None):
             next_gen = []
         for i in range(0, g.num_selected_solutions):
-            # TODO: change to get_solution(index)?
-            solution = current_gen.get_solutions()[i]
+            solution = current_gen.get_solution(i)
             output += f"\t{solution.get_fitness()}"
 
         print(output)
