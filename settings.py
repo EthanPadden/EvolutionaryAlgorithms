@@ -1,6 +1,5 @@
 '''IO settings'''
 input_filename = 'input/input 1.csv'
-output_filename = 'output/output_temp.csv'
 
 # Available graphs:
 #   1 - Scatter plot of total range vs total cost where each point is a solution in a population

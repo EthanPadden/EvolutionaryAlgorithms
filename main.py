@@ -1,4 +1,5 @@
 import csv
+from datetime import datetime
 from math import ceil
 import random
 import numpy as np
@@ -45,7 +46,9 @@ if __name__ == '__main__':
                 }
             )
 
-    with open(g.output_filename, 'w', newline='') as file:
+    output_filename = f"output/output {datetime.now().strftime('Y-%m-%d_%H-%M-%S.csv')}"
+
+    with open(output_filename, 'w', newline='') as file:
         writer = csv.writer(file)
 
         # INITIALISATION    ===================================
