@@ -1,3 +1,4 @@
+import copy
 import random
 
 import numpy as np
@@ -27,7 +28,7 @@ def evaluate(population):
 
 def select_by_sorting(current_gen, next_gen=None):
     # Sort the population by fitness
-    current_gen.sort()
+    current_gen.sort_by_fitness()
 
     print('SELECTION - SORTED FITNESSES:')
     print(current_gen.to_string())
@@ -58,11 +59,61 @@ def select_by_examining_dominance_relationships(current_gen, next_gen=None):
     Each point is a solution in the population
     Solution A dominates solution B if the total_range is higher and the total_cost is lower in A
     In this case, we can get rid of solution B
+    
+    So should we go through every combination of 2 solutions - seems inefficient
+    Better:
+    sort the solutions by total_range - as if we are looking right to left on the plot
+    Take the first solution A (the farthest right) and work through the list for every other solution Bi - FROM WORST TO BEST!!!
+    If the total_cost of A < total_cost of Bi then get rid of Bi because A dominates Bi
+    Now this will leave a list of solutions of length s E [1, len(current_gen)]
+    Should we now choose the second of the list (if s > 2) to see if it dominates the rest?
+    Maybe we can try doing this until the list reaches a certain length defined in the settings
+    - do the results differ much if we first sort by total_cost (ascending)
     '''
-    pass
+    # Sort solutions by range
+    # TODO: setting for cost instead
+    current_gen.sort_by_range()
+
+    # TODO: make more concise - using deepcopy of an object?
+    # TODO: make consistent with other selction method
+    next_gen_solns = copy.deepcopy(current_gen.get_solutions())
+    if (next_gen == None):
+        next_gen = Population(current_gen.get_gen_num() + 1)
+    for solution in next_gen_solns:
+        next_gen.add_solution(solution)
+
+    # This is the index of the solution we are considering (comparing to all others)
+    compare_index = 0
+    while (len(next_gen.get_solutions()) > g.num_selected_solutions) and compare_index < len(current_gen.get_solutions()):
+        # Solution we are considering out of the current generation
+        compare_soln = current_gen.get_solutions()[compare_index]
+
+        # For every other solution - worst to best
+        for other_soln_index in range((len(next_gen.get_solutions())-1), compare_index, -1):
+            if len(next_gen.get_solutions()) == g.num_selected_solutions:
+                break
+            elif len(next_gen.get_solutions()) < g.num_selected_solutions:
+                raise ValueError
+            # Solution to compare to out of the next generation
+            other_soln = next_gen.get_solutions()[other_soln_index]
+            # we can use the dominates method regardless of which member the solutions were sorted by
+            if compare_soln.dominates(other_soln):
+                # get rid of the other solution in the next generation
+                next_gen.get_solutions().pop(other_soln_index)
+
+        # Now we move onto the next solution
+        compare_index += 1
+
+    # At this point, the compare index could reach the end of the population before next_gen has reached the target size
+    # In this case, we just remove the worst solutions until the next_gen is of the target size
+    while (len(next_gen.get_solutions()) > g.num_selected_solutions):
+        next_gen.get_solutions().pop()
+
+    return next_gen
+
 
 def variation(current_gen, next_gen):
-    current_gen.sort()
+    current_gen.sort_by_fitness()
 
     # CROSSOVER
     if g.crossover == True:

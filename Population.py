@@ -56,9 +56,19 @@ class Population:
 
         return sum_fitnesses / g.population_size
 
-    def sort(self):
+    def sort_by_fitness(self):
         # Sort the population by fitness
         sorted_solutions = sorted(self.__solutions, key=lambda solution: solution.get_fitness(), reverse=True)
+        self.__solutions = sorted_solutions
+
+    def sort_by_range(self):
+        # Sort the population by fitness
+        sorted_solutions = sorted(self.__solutions, key=lambda solution: solution.get_totals()[0], reverse=True)
+        self.__solutions = sorted_solutions
+
+    def sort_by_cost(self):
+        # Sort the population by fitness
+        sorted_solutions = sorted(self.__solutions, key=lambda solution: solution.get_totals()[1], reverse=True)
         self.__solutions = sorted_solutions
 
     def mutate(self):

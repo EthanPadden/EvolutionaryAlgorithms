@@ -6,6 +6,8 @@ class Solution:
     def __init__(self, config):
         self.__config = config
         self.__fitness = 0
+        self.__total_range = None
+        self.__total_cost = None
 
 
     def to_string(self):

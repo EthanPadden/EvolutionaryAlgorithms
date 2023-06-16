@@ -101,8 +101,11 @@ if __name__ == '__main__':
             writer.writerow(['perf stagn', 'false', 'terminate', 'false'])
 
             # SELECTION       ===================================
-            # print(f"\n\n{'*' * 15} {current_gen.get_gen_num()}\tSELECTION {'*' * 15}")
-            next_gen = evo.select_by_sorting(current_gen)
+            if g.selection_method == 1:
+                next_gen = evo.select_by_sorting(current_gen)
+            elif g.selection_method == 2:
+                next_gen = evo.select_by_examining_dominance_relationships(current_gen)
+            # TODO: custom error whenever an invalid setting is selected
             writer.writerow(['STAGE', 'SELECTION'])
             writer.writerows(current_gen.to_csv())
 
