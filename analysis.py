@@ -20,7 +20,7 @@ should be a list with items in the form
     population_data
 ]
 '''
-def scatter_plot(population_group_data):
+def scatter_plot_objective_space(population_group_data):
     '''Gather into this data structure:
     there will be a scatter for each generation
     [
@@ -166,7 +166,7 @@ if __name__ == '__main__':
         population_group_data.pop(0)
 
         if g.graph_option == 1:
-           scatter_plot(population_group_data)
+           scatter_plot_objective_space(population_group_data)
         elif g.graph_option == 2:
             line_graph_fitnesses(population_group_data)
 

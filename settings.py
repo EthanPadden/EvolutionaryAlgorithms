@@ -1,6 +1,6 @@
 '''IO settings'''
 input_filename = 'input/input 1.csv'
-
+output_filename = 'output/output Y-06-16_09-12-44.csv'
 # Available graphs:
 #   1 - Scatter plot of total range vs total cost where each point is a solution in a population
 #   2 - Line graph of fitness (best/worst/avg) against generation number
