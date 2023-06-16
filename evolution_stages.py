@@ -99,7 +99,7 @@ def select_by_examining_dominance_relationships(current_gen, next_gen=None):
             # we can use the dominates method regardless of which member the solutions were sorted by
             if compare_soln.dominates(other_soln):
                 # get rid of the other solution in the next generation
-                next_gen.get_solutions().pop(other_soln_index)
+                next_gen.remove_solution(other_soln_index)
 
         # Now we move onto the next solution
         compare_index += 1
@@ -107,8 +107,7 @@ def select_by_examining_dominance_relationships(current_gen, next_gen=None):
     # At this point, the compare index could reach the end of the population before next_gen has reached the target size
     # In this case, we just remove the worst solutions until the next_gen is of the target size
     while (next_gen.size() > g.num_selected_solutions):
-        # TODO: change to remove_solution(i=None)
-        next_gen.get_solutions().pop()
+        next_gen.remove_solution()
 
     return next_gen
 
@@ -138,8 +137,8 @@ def variation(current_gen, next_gen):
 
         while(next_gen.size() < g.population_size):
             # choose the top 2 in the population - and pop them off so we dont consider them anymore
-            parent_a = current_gen.get_solutions().pop(0)
-            parent_b = current_gen.get_solutions().pop(0)
+            parent_a = current_gen.remove_solution(0)
+            parent_b = current_gen.remove_solution(0)
             offspring_c, offspring_d = tools.crossover(parent_a, parent_b)
             output = f"CROSSOVER:\t{parent_a.get_config()} + {parent_b.get_config()} = {offspring_c.get_config()} + {offspring_d.get_config()}"
             output += f"\n\t\t\t{str(parent_a.get_fitness())} + {str(parent_b.get_fitness())} = {str(offspring_c.get_fitness())} + {str(offspring_d.get_fitness())}"

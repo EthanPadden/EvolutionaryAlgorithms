@@ -101,3 +101,9 @@ class Population:
 
     def get_solution(self, i):
         return self.__solutions[i]
+
+    def remove_solution(self, i=None):
+        if i == None:
+            return self.__solutions.pop()
+        else:
+            return self.__solutions.pop(i)
