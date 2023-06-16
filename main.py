@@ -102,7 +102,7 @@ if __name__ == '__main__':
 
             # SELECTION       ===================================
             # print(f"\n\n{'*' * 15} {current_gen.get_gen_num()}\tSELECTION {'*' * 15}")
-            next_gen = evo.select(current_gen)
+            next_gen = evo.select_by_sorting(current_gen)
             writer.writerow(['STAGE', 'SELECTION'])
             writer.writerows(current_gen.to_csv())
 

@@ -89,3 +89,9 @@ class Solution:
             sum_cost += tower_placement['cost']
 
         return sum_range, sum_cost
+
+    def dominates(self, other_solution):
+        this_soln_totals = self.get_totals()
+        other_soln_totals = other_solution.get_totals()
+
+        return ((this_soln_totals[0] > other_soln_totals[0]) and (this_soln_totals[1] < other_soln_totals[1]))

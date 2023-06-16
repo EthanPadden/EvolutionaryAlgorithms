@@ -25,7 +25,7 @@ def evaluate(population):
     for solution in population.get_solutions():
         solution.calc_fitness(fitness_function)
 
-def select(current_gen, next_gen=None):
+def select_by_sorting(current_gen, next_gen=None):
     # Sort the population by fitness
     current_gen.sort()
 
@@ -44,6 +44,22 @@ def select(current_gen, next_gen=None):
     slots_left = g.population_size - g.num_selected_solutions
     print(f'SELECTION - slots left = {slots_left}')
     return next_gen
+
+def select_by_examining_dominance_relationships(current_gen, next_gen=None):
+    '''
+
+    :param current_gen:
+    :param next_gen:
+    :return:
+    '''
+
+    '''
+    So we can think of the population as a scatter plot where the x-axis is total_range and the y-axis is total_cost
+    Each point is a solution in the population
+    Solution A dominates solution B if the total_range is higher and the total_cost is lower in A
+    In this case, we can get rid of solution B
+    '''
+    pass
 
 def variation(current_gen, next_gen):
     current_gen.sort()
