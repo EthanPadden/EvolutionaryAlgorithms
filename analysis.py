@@ -165,9 +165,9 @@ if __name__ == '__main__':
             row = next(reader, None)
         population_group_data.pop(0)
 
-        if g.graph_option == 1:
+        if g.graph_option == g.GraphOption.SCATTER_PLOT_ERANGE_ECOST:
            scatter_plot_objective_space(population_group_data)
-        elif g.graph_option == 2:
+        elif g.graph_option == g.GraphOption.LINE_GRAPH_GEN_FITNESS:
             line_graph_fitnesses(population_group_data)
 
 

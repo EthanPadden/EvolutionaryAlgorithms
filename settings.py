@@ -1,10 +1,13 @@
+from enum import Enum
+
 '''IO settings'''
 input_filename = 'input/input 1.csv'
 output_filename = 'output/output Y-06-16_11-21-52.csv'
-# Available graphs:
-#   1 - Scatter plot of total range vs total cost where each point is a solution in a population
-#   2 - Line graph of fitness (best/worst/avg) against generation number
-graph_option = 1
+class GraphOption(Enum):
+    SCATTER_PLOT_ERANGE_ECOST = 1   # Scatter plot of total range vs total cost where each point is a solution in a population
+    LINE_GRAPH_GEN_FITNESS = 2      # Line graph of fitness (best/worst/avg) against generation number
+
+graph_option = GraphOption.SCATTER_PLOT_ERANGE_ECOST
 
 '''Initialisation variables'''
 population_size = 10
@@ -26,12 +29,14 @@ percentage_performance_stagnation = 5
 
 '''Selection variables'''
 num_selected_solutions = 6
-# TODO: equivalent of enum in Python?
-# Selection methods:
-#   1 - sort by fitness and select top solutions
-#   2 - sort by range/cost and examine dominant relationships
-selection_method = 1
+class SelectionMethod(Enum):
+    FITNESS = 1     # sort by fitness and select top solutions
+    DOMINANCE = 2   # sort by range/cost and examine dominant relationships
+
+selection_method = SelectionMethod.FITNESS
 
 '''Variation variables'''
 crossover = True
 mutation = True
+
+# TODO: reset settings to defaults option
