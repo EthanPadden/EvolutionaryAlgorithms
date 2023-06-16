@@ -84,15 +84,15 @@ def select_by_examining_dominance_relationships(current_gen, next_gen=None):
 
     # This is the index of the solution we are considering (comparing to all others)
     compare_index = 0
-    while (len(next_gen.get_solutions()) > g.num_selected_solutions) and compare_index < len(current_gen.get_solutions()):
+    while (next_gen.size() > g.num_selected_solutions) and compare_index < current_gen.size():
         # Solution we are considering out of the current generation
         compare_soln = current_gen.get_solutions()[compare_index]
 
         # For every other solution - worst to best
-        for other_soln_index in range((len(next_gen.get_solutions())-1), compare_index, -1):
-            if len(next_gen.get_solutions()) == g.num_selected_solutions:
+        for other_soln_index in range((next_gen.size()-1), compare_index, -1):
+            if next_gen.size() == g.num_selected_solutions:
                 break
-            elif len(next_gen.get_solutions()) < g.num_selected_solutions:
+            elif next_gen.size() < g.num_selected_solutions:
                 raise ValueError
             # Solution to compare to out of the next generation
             other_soln = next_gen.get_solutions()[other_soln_index]
@@ -106,7 +106,7 @@ def select_by_examining_dominance_relationships(current_gen, next_gen=None):
 
     # At this point, the compare index could reach the end of the population before next_gen has reached the target size
     # In this case, we just remove the worst solutions until the next_gen is of the target size
-    while (len(next_gen.get_solutions()) > g.num_selected_solutions):
+    while (next_gen.size() > g.num_selected_solutions):
         next_gen.get_solutions().pop()
 
     return next_gen
@@ -136,8 +136,7 @@ def variation(current_gen, next_gen):
         slots_left = g.population_size - g.num_selected_solutions
         print(f'VARIATION - slots left = {slots_left}')
 
-        # TODO: get_size() method for population
-        while(len(next_gen.get_solutions()) < g.population_size):
+        while(next_gen.size() < g.population_size):
             # choose the top 2 in the population - and pop them off so we dont consider them anymore
             parent_a = current_gen.get_solutions().pop(0)
             parent_b = current_gen.get_solutions().pop(0)
@@ -149,7 +148,7 @@ def variation(current_gen, next_gen):
             offspring_c.calc_fitness(fitness_function)
             offspring_d.calc_fitness(fitness_function)
             next_gen.add_solution(offspring_c)
-            if len(next_gen.get_solutions()) < g.population_size:
+            if next_gen.size() < g.population_size:
                 next_gen.add_solution(offspring_d)
     else:
         # Just fill up the rest of the slots with the sorted population

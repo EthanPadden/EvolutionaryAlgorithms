@@ -19,7 +19,7 @@ class Population:
         self.__solutions = []
 
     def add_solution(self, solution):
-        if len(self.__solutions) < g.population_size:
+        if self.size() < g.population_size:
             self.__solutions.append(solution)
         else:
             raise AttributeError('Population size already met')
@@ -95,3 +95,6 @@ class Population:
                     raise ValueError
                 soln_to_mutate.set_config(config)
                 # TODO: more efficient way
+
+    def size(self):
+        return len(self.__solutions)
