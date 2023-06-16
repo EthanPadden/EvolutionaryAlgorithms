@@ -1,12 +1,12 @@
 import copy
-import random
 
 import numpy as np
+
+import fitness_functions as f
 import settings as g
 import tools
 from Population import Population
 from Solution import Solution
-import fitness_functions as f
 
 
 def initialise():
@@ -21,10 +21,12 @@ def initialise():
 
     return population
 
+
 def evaluate(population):
-    fitness_function = f.fitness_funtions[g.fitness_fn_num-1]
+    fitness_function = f.fitness_funtions[g.fitness_fn_num - 1]
     for solution in population.get_solutions():
         solution.calc_fitness(fitness_function)
+
 
 def select_by_sorting(current_gen, next_gen=None):
     # Sort the population by fitness
@@ -34,7 +36,7 @@ def select_by_sorting(current_gen, next_gen=None):
     print(current_gen.to_string())
 
     output = f'SELECTION - {g.num_selected_solutions} SELECTED:\t\t'
-    if(next_gen == None):
+    if (next_gen == None):
         next_gen = Population(current_gen.get_gen_num() + 1)
     for i in range(0, g.num_selected_solutions):
         solution = current_gen.get_solution(i)
@@ -45,6 +47,7 @@ def select_by_sorting(current_gen, next_gen=None):
     slots_left = g.population_size - g.num_selected_solutions
     print(f'SELECTION - slots left = {slots_left}')
     return next_gen
+
 
 def select_by_examining_dominance_relationships(current_gen, next_gen=None):
     '''
@@ -91,7 +94,7 @@ def select_by_examining_dominance_relationships(current_gen, next_gen=None):
         compare_soln = current_gen.get_solution(compare_index)
 
         # For every other solution - worst to best
-        for other_soln_index in range((next_gen.size()-1), compare_index, -1):
+        for other_soln_index in range((next_gen.size() - 1), compare_index, -1):
             if next_gen.size() == g.num_selected_solutions:
                 break
             elif next_gen.size() < g.num_selected_solutions:
@@ -137,7 +140,7 @@ def variation(current_gen, next_gen):
         slots_left = g.population_size - g.num_selected_solutions
         print(f'VARIATION - slots left = {slots_left}')
 
-        while(next_gen.size() < g.population_size):
+        while (next_gen.size() < g.population_size):
             # choose the top 2 in the population - and pop them off so we dont consider them anymore
             parent_a = current_gen.remove_solution(0)
             parent_b = current_gen.remove_solution(0)
@@ -145,7 +148,7 @@ def variation(current_gen, next_gen):
             output = f"CROSSOVER:\t{parent_a.get_config()} + {parent_b.get_config()} = {offspring_c.get_config()} + {offspring_d.get_config()}"
             output += f"\n\t\t\t{str(parent_a.get_fitness())} + {str(parent_b.get_fitness())} = {str(offspring_c.get_fitness())} + {str(offspring_d.get_fitness())}"
             print(output)
-            fitness_function = f.fitness_funtions[g.fitness_fn_num-1]
+            fitness_function = f.fitness_funtions[g.fitness_fn_num - 1]
             offspring_c.calc_fitness(fitness_function)
             offspring_d.calc_fitness(fitness_function)
             next_gen.add_solution(offspring_c)

@@ -14,7 +14,6 @@ class Population:
             self.__gen_num = gen_num
         self.__solutions = []
 
-
     def clear_solutions(self):
         self.__solutions = []
 

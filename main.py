@@ -1,7 +1,8 @@
 import csv
 from datetime import datetime
-import settings as g
+
 import evolution_stages as evo
+import settings as g
 from Solution import Solution
 
 if __name__ == '__main__':
@@ -51,10 +52,9 @@ if __name__ == '__main__':
         writer.writerows(current_gen.to_csv())
 
         # GENERATIONAL LOOP
-        # TODO: remove this variable - not needed? just use break?
         prev_avg_fitness = 0
 
-        while(True):
+        while (True):
             writer.writerow(['GEN', current_gen.get_gen_num()])
 
             # EVALUATION        ===================================
@@ -79,7 +79,7 @@ if __name__ == '__main__':
             # ie if we don't see an increase of at least 5% for the average fitness, stop
             current_avg_fitness = current_gen.calc_avg_fitness()
             diff_avg_fitness = current_avg_fitness - prev_avg_fitness
-            if(current_gen.get_gen_num() > 0):
+            if (current_gen.get_gen_num() > 0):
                 if ((diff_avg_fitness / prev_avg_fitness) * 100) < 5:
                     writer.writerow(['perf stagn', 'true', current_avg_fitness, prev_avg_fitness, diff_avg_fitness])
                     break

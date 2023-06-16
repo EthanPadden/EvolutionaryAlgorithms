@@ -1,6 +1,8 @@
 import csv
-import settings as g
+
 import matplotlib.pyplot as plt
+
+import settings as g
 
 '''
 OUTPUT IDEAS:
@@ -8,7 +10,6 @@ Fitness Progression: best/worst/avg fitness against generation number
 TODO: where decimal is the evo stage?
 Scatter plots of solutions
 '''
-
 
 '''Scatter plot of total range vs total cost where each point is a solution in a population
 THE NUMBER OF GENERATIONS SCATTERED IS LIMITED TO THE AMOUNT OF COLOURS AVAILABLE ON MATPLOTLIB
@@ -20,6 +21,8 @@ should be a list with items in the form
     population_data
 ]
 '''
+
+
 def scatter_plot_objective_space(population_group_data):
     '''Gather into this data structure:
     there will be a scatter for each generation
@@ -58,7 +61,8 @@ def scatter_plot_objective_space(population_group_data):
     handles = []
     labels = []
     for i in range(0, min(len(stats), len(color_codes))):
-        scatter = plt.scatter(stats[i]['total_ranges'], stats[i]['total_costs'], marker='o', color=color_codes[i], label=f'{i}')
+        scatter = plt.scatter(stats[i]['total_ranges'], stats[i]['total_costs'], marker='o', color=color_codes[i],
+                              label=f'{i}')
         handles.append(scatter)
         labels.append(i)
     plt.title('Total ranges vs total cost')
@@ -67,6 +71,7 @@ def scatter_plot_objective_space(population_group_data):
     plt.legend(handles, labels)  # Insert legend using handles and labels
 
     plt.show()
+
 
 '''
 @:param population_group_data
@@ -79,6 +84,8 @@ should be a list with items in the form
 
 Line graph of fitness (best/worst/avg) against generation number
 '''
+
+
 def line_graph_fitnesses(population_group_data):
     gen_nums = []
     avg_fitnesses = []
@@ -100,7 +107,7 @@ def line_graph_fitnesses(population_group_data):
         for solution_data in population_data:
             total_fitness += solution_data[1]
             fitnesses.append(solution_data[1])
-        avg_fitness = total_fitness/g.population_size
+        avg_fitness = total_fitness / g.population_size
         best_fitnesses.append(max(fitnesses))
         worst_fitnesses.append(min(fitnesses))
         gen_nums.append(gen_num)
@@ -114,6 +121,7 @@ def line_graph_fitnesses(population_group_data):
     plt.xlabel('Generation')
     plt.ylabel('Avg fitness')
     plt.show()
+
 
 if __name__ == '__main__':
     with open(g.output_filename, 'r') as file:
@@ -166,8 +174,6 @@ if __name__ == '__main__':
         population_group_data.pop(0)
 
         if g.graph_option == g.GraphOption.SCATTER_PLOT_ERANGE_ECOST:
-           scatter_plot_objective_space(population_group_data)
+            scatter_plot_objective_space(population_group_data)
         elif g.graph_option == g.GraphOption.LINE_GRAPH_GEN_FITNESS:
             line_graph_fitnesses(population_group_data)
-
-

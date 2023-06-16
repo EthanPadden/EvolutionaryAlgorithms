@@ -1,9 +1,9 @@
-import numpy as np
 import math
-from tabulate import tabulate
 
-import settings as g
+import numpy as np
+
 from Solution import Solution
+
 
 def fitness(config):
     '''What could be a fitness function here?
@@ -34,13 +34,13 @@ def fitness(config):
         sum_range += tower_placement['range']
         sum_cost += tower_placement['cost']
 
-    return (100*sum_range) - sum_cost
+    return (100 * sum_range) - sum_cost
 
 
 def crossover(parent_a, parent_b):
     config_a = parent_a.get_config()
     config_b = parent_b.get_config()
-    crossover_point = math.ceil(len(config_a)/2)
+    crossover_point = math.ceil(len(config_a) / 2)
 
     config_c = np.concatenate((config_a[:crossover_point], config_b[crossover_point:]))
     config_d = np.concatenate((config_b[:crossover_point], config_a[crossover_point:]))
