@@ -4,7 +4,7 @@ output_filename = 'output/output Y-06-16_11-21-52.csv'
 # Available graphs:
 #   1 - Scatter plot of total range vs total cost where each point is a solution in a population
 #   2 - Line graph of fitness (best/worst/avg) against generation number
-graph_option = 2
+graph_option = 1
 
 '''Initialisation variables'''
 population_size = 10
@@ -30,7 +30,7 @@ num_selected_solutions = 6
 # Selection methods:
 #   1 - sort by fitness and select top solutions
 #   2 - sort by range/cost and examine dominant relationships
-selection_method = 2
+selection_method = 1
 
 '''Variation variables'''
 crossover = True
