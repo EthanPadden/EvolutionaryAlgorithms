@@ -71,8 +71,10 @@ def select_by_examining_dominance_relationships(current_gen, next_gen=None):
     - do the results differ much if we first sort by total_cost (ascending)
     '''
     # Sort solutions by range
-    # TODO: setting for cost instead
-    current_gen.sort_by_range()
+    if g.sort_attribute == g.SortAttribute.RANGE:
+        current_gen.sort_by_range()
+    elif g.sort_attribute == g.SortAttribute.COST:
+        current_gen.sort_by_cost()
 
     # TODO: make more concise - using deepcopy of an object?
     # TODO: make consistent with other selction method

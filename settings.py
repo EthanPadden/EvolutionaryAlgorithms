@@ -35,6 +35,11 @@ class SelectionMethod(Enum):
 
 selection_method = SelectionMethod.FITNESS
 
+class SortAttribute(Enum):
+    RANGE = 1
+    COST = 2
+
+sort_attribute = SortAttribute.RANGE
 '''Variation variables'''
 crossover = True
 mutation = True
