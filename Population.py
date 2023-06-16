@@ -14,12 +14,11 @@ class Population:
             self.__gen_num = gen_num
         self.__solutions = []
 
-
     def clear_solutions(self):
         self.__solutions = []
 
     def add_solution(self, solution):
-        if len(self.__solutions) < g.population_size:
+        if self.size() < g.population_size:
             self.__solutions.append(solution)
         else:
             raise AttributeError('Population size already met')
@@ -56,9 +55,19 @@ class Population:
 
         return sum_fitnesses / g.population_size
 
-    def sort(self):
+    def sort_by_fitness(self):
         # Sort the population by fitness
         sorted_solutions = sorted(self.__solutions, key=lambda solution: solution.get_fitness(), reverse=True)
+        self.__solutions = sorted_solutions
+
+    def sort_by_range(self):
+        # Sort the population by fitness
+        sorted_solutions = sorted(self.__solutions, key=lambda solution: solution.get_totals()[0], reverse=True)
+        self.__solutions = sorted_solutions
+
+    def sort_by_cost(self):
+        # Sort the population by fitness
+        sorted_solutions = sorted(self.__solutions, key=lambda solution: solution.get_totals()[1], reverse=True)
         self.__solutions = sorted_solutions
 
     def mutate(self):
@@ -85,3 +94,15 @@ class Population:
                     raise ValueError
                 soln_to_mutate.set_config(config)
                 # TODO: more efficient way
+
+    def size(self):
+        return len(self.__solutions)
+
+    def get_solution(self, i):
+        return self.__solutions[i]
+
+    def remove_solution(self, i=None):
+        if i == None:
+            return self.__solutions.pop()
+        else:
+            return self.__solutions.pop(i)

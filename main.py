@@ -1,12 +1,8 @@
 import csv
 from datetime import datetime
-from math import ceil
-import random
-import numpy as np
-import tools
-import settings as g
+
 import evolution_stages as evo
-import fitness_functions as f
+import settings as g
 from Solution import Solution
 
 if __name__ == '__main__':
@@ -32,7 +28,6 @@ if __name__ == '__main__':
     # configuration consists of 3 towers
     # since each tower location is at a set index, we can use a bitstring of length T
     # e.g. if T = 8 config [t2, t5, t6] can be represented as 00100110
-    # TODO: each solution will have their fitness associated with them and stored
     # solution: { bitstring : fitness }
     # population consists of N possible tower configurations
     with open(g.input_filename, 'r') as file:
@@ -57,17 +52,13 @@ if __name__ == '__main__':
         writer.writerows(current_gen.to_csv())
 
         # GENERATIONAL LOOP
-        # TODO: remove this variable - not needed? just use break?
-        terminate = False
         prev_avg_fitness = 0
 
-        while(terminate == False):
+        while (True):
             writer.writerow(['GEN', current_gen.get_gen_num()])
 
             # EVALUATION        ===================================
             evo.evaluate(current_gen)
-            # print(f"\n\n{'*' * 15} {current_gen.get_gen_num()}\tEVALUATION {'*' * 15}")
-            # print(current_gen.to_string())
             writer.writerow(['STAGE', 'EVALUATION'])
             writer.writerows(current_gen.to_csv())
 
@@ -78,10 +69,7 @@ if __name__ == '__main__':
             # Max generations reached?
             writer.writerow(['STAGE', 'TERMINATION'])
 
-            # print(f"\n\n{'*' * 15} {current_gen.get_gen_num()}\tTERMINATION {'*' * 15}")
             if current_gen.get_gen_num() >= g.max_generations:
-                # print(f'Max generations reached: {current_gen.get_gen_num()} >= {g.max_generations} - terminating...')
-                terminate = True
                 writer.writerow(['max gens', 'true', 'terminate', 'true'])
                 break
             writer.writerow(['max gens', 'false', 'terminate', 'false'])
@@ -91,26 +79,25 @@ if __name__ == '__main__':
             # ie if we don't see an increase of at least 5% for the average fitness, stop
             current_avg_fitness = current_gen.calc_avg_fitness()
             diff_avg_fitness = current_avg_fitness - prev_avg_fitness
-            if(current_gen.get_gen_num() > 0):
+            if (current_gen.get_gen_num() > 0):
                 if ((diff_avg_fitness / prev_avg_fitness) * 100) < 5:
-                    # print(f'Performance stagnation: {current_avg_fitness} - {prev_avg_fitness} = {diff_avg_fitness} - terminating...')
                     writer.writerow(['perf stagn', 'true', current_avg_fitness, prev_avg_fitness, diff_avg_fitness])
-                    terminate = True
                     break
-            # print('continue!')
             writer.writerow(['perf stagn', 'false', 'terminate', 'false'])
 
             # SELECTION       ===================================
-            # print(f"\n\n{'*' * 15} {current_gen.get_gen_num()}\tSELECTION {'*' * 15}")
-            next_gen = evo.select(current_gen)
+            if g.selection_method == g.SelectionMethod.FITNESS:
+                next_gen = evo.select_by_sorting(current_gen)
+            elif g.selection_method == g.SelectionMethod.DOMINANCE:
+                next_gen = evo.select_by_examining_dominance_relationships(current_gen)
             writer.writerow(['STAGE', 'SELECTION'])
             writer.writerows(current_gen.to_csv())
 
             # # VARIATION       ===================================
-            # print(f"\n\n{'*' * 15} {current_gen.get_gen_num()}\tVARIATION {'*' * 15}")
             evo.variation(current_gen, next_gen)
             writer.writerow(['STAGE', 'VARIATION'])
             writer.writerows(current_gen.to_csv())
 
             prev_avg_fitness = current_avg_fitness
             current_gen = next_gen
+            # TODO: dont create output file unless no errors occurred - catch exception and delete file

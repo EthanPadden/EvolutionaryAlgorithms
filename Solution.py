@@ -1,12 +1,11 @@
-import csv
-
-import settings as g
 class Solution:
     possible_tower_placements = []
+
     def __init__(self, config):
         self.__config = config
         self.__fitness = 0
-
+        self.__total_range = None
+        self.__total_cost = None
 
     def to_string(self):
         bitstring = ''.join(map(str, self.__config))
@@ -24,8 +23,6 @@ class Solution:
             total_range += tower_placement['range']
             total_cost += tower_placement['cost']
 
-        # TODO: change to tabulate
-        # TODO: change so that tower placements stats are stored rather than calculated every time to_string is called
         return [
             bitstring,
             self.__fitness,
@@ -59,7 +56,6 @@ class Solution:
             total_cost
         ]
 
-
     def calc_fitness(self, fitness_fn):
         self.__fitness = fitness_fn(self)
 
@@ -89,3 +85,9 @@ class Solution:
             sum_cost += tower_placement['cost']
 
         return sum_range, sum_cost
+
+    def dominates(self, other_solution):
+        this_soln_totals = self.get_totals()
+        other_soln_totals = other_solution.get_totals()
+
+        return ((this_soln_totals[0] > other_soln_totals[0]) and (this_soln_totals[1] < other_soln_totals[1]))

@@ -1,5 +1,6 @@
 import settings as g
 
+
 def fitness_fn_1(solution):
     '''What could be a fitness function here?
         Maximise range
@@ -15,13 +16,14 @@ def fitness_fn_1(solution):
         TODO: similarly - is there a minimum range below which the solution is not viable?
         '''
     sum_range, sum_cost = solution.get_totals()
-    return g.m*((g.x * sum_range) - (g.y * sum_cost))
+    return g.m * ((g.x * sum_range) - (g.y * sum_cost))
+
 
 def fitness_fn_2(solution):
     # fitness = m * (sum_range/(sum_cost + z))
     # where x is a very small value to account for the edge case where sum_cost = 0
     sum_range, sum_cost = solution.get_totals()
-    return g.m*(sum_range/(sum_cost + g.z))
+    return g.m * (sum_range / (sum_cost + g.z))
 
 
 fitness_funtions = [fitness_fn_1, fitness_fn_2]
