@@ -7,7 +7,7 @@ from Solution import Solution
 
 if __name__ == '__main__':
 
-    '''Single-objective problem:
+    '''Multi-objective problem:
     Problem: Optimizing the Placement of Cell Towers for Maximum Coverage
     * Imagine you are a telecommunication company tasked with optimizing the placement of cell towers in a given region to provide maximum coverage and minimize signal interference.
     The objective is to determine the optimal locations for the cell towers to ensure the widest possible coverage while minimizing the number of towers needed.
